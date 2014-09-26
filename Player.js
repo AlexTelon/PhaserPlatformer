@@ -5,18 +5,21 @@ Player = function(game) {
 	this.game = game;
 	this.player= null;
 	this.cursors = null;
-	
 };
 
 Player.prototype = {
 
 	preload: function () {
+		console.log("preload player");
 		this.game.load.spritesheet('dude', 'assets/games/starstruck/dude.png', 32, 48);
 	},
 
 	create: function () {
+		console.log("create player");
 
 		this.player = game.add.sprite(100, 200, 'dude');
+		console.log(this.game.physics);
+		console.log(this.game.physics.p2);
 
 		this.game.physics.p2.enable(this.player);
 		this.player.body.fixedRotation = true;
@@ -29,6 +32,10 @@ Player.prototype = {
 
 	    this.cursors = this.game.input.keyboard.createCursorKeys();
 		this.game.camera.follow(this.player);
+
+		// Keys
+		jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+		return this.player;
 	},
 
 	collectStar: function(player, star) {
@@ -41,58 +48,11 @@ Player.prototype = {
 	},
 
 	update: function() {
-		//  Collide the player and the stars with the platforms
-    //	this.game.physics.p2.collide(this.player, level.platforms);
+	// nothing to do now that keyboard handling is in keys.js instead.
+	},
 
-    //	this.game.physics.p2.overlap(this.player, level.stars, this.collectStar, null, this);
-
-		this.player.body.velocity.x = 0;
-
-	    if(this.cursors.left.isDown)
-	    {
-			console.log("left");
-			this.player.body.moveLeft(250);
-
-	    	this.player.animations.play('left');
-	    }
-	    else if(this.cursors.right.isDown)
-	    {
-			this.player.body.moveRight(250);
-
-	    	this.player.animations.play('right');
-	    }
-	    else
-	    {
-	    	this.player.animations.stop();
-	    	this.player.frame = 4;
-	    }
-
-	    //  Allow the player to jump if they are touching the ground.
-	    if (this.cursors.up.isDown && checkIfCanJump(this.player))
-	    {
-			this.player.body.moveUp(300);
-	    }
+	flip: function() {
+		console.log("Filp player");
 	}
 
 };
-
-function checkIfCanJump(player) {
-
-	var yAxis = p2.vec2.fromValues(0, 1);
-	var result = false;
-
-	for (var i = 0; i < game.physics.p2.world.narrowphase.contactEquations.length; i++)
-	{
-		var c = game.physics.p2.world.narrowphase.contactEquations[i];
-
-		if (c.bodyA === player.body.data || c.bodyB === player.body.data)
-		{
-			var d = p2.vec2.dot(c.normalA, yAxis); // Normal dot Y-axis
-			if (c.bodyA === player.body.data) d *= -1;
-			if (d > 0.5) result = true;
-		}
-	}
-
-	return result;
-
-}
