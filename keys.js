@@ -22,8 +22,6 @@ Keys.prototype = {
 		this.cursors = this.game.input.keyboard.createCursorKeys();
 
 		// Keys
-		this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-
 		this.flipWorld = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
 //		this.flipWorld.onDown.add(this.player.flip, this.player);
 		this.flipWorld.onDown.add(this.level.flipMap, this.level);
@@ -51,7 +49,7 @@ Keys.prototype = {
 		}
 
 		//  Allow the player to jump if they are touching the ground.
-		if (this.jumpButton.isDown && checkIfCanJump(this.player))
+		if (this.cursors.up.isDown && checkIfCanJump(this.player))
 		{
 			this.player.body.moveUp(300);
 		}

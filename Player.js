@@ -32,9 +32,6 @@ Player.prototype = {
 
 	    this.cursors = this.game.input.keyboard.createCursorKeys();
 		this.game.camera.follow(this.player);
-
-		// Keys
-		jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 		return this.player;
 	},
 
