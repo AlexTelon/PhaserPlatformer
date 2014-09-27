@@ -4,9 +4,12 @@ Level = function(game) {
 	this.game = game;
 	this.stars = null;
 	this.map = null;
-	this.layer = null;
+	this.layer = [];
+	this.currentLayer = null;
 	this.gravityDir = 1;
 	this.flipSwitch = false;
+
+	this.mapObjects = null;
 };
 
 Level.prototype = {
@@ -24,17 +27,39 @@ Level.prototype = {
 
 		game.physics.startSystem(Phaser.Physics.P2JS);
 
-		setUpMapSwitch();
+		//Setup the world and the upside down world
+
+		this.game.stage.backgroundColor = '#2d2d2d';
+		this.map = this.game.add.tilemap('map');
+
+		this.map.addTilesetImage('ground_1x1');
+
+		this.layer[1] = this.map.createLayer('upsideDown');
+		this.layer[1].resizeWorld();
+
+		this.layer[0] = this.map.createLayer('Tile Layer 1');
+		this.layer[0].resizeWorld();
+
+		this.currentLayer = this.layer[0];
+
+		//  Set the tiles for collision.
+		//  Do this BEFORE generating the p2 bodies below.
+		this.map.setCollisionBetween(1, 12, true, this.currentLayer, true);
+
+		//  Convert the tilemap layer into bodies. Only tiles that collide (see above) are created.
+		//  This call returns an array of body objects which you can perform addition actions on if
+		//  required. There is also a parameter to control optimising the map build.
+		this.game.physics.p2.convertTilemap(this.map, this.currentLayer);
 
 		game.physics.p2.restitution = 0;
 		game.physics.p2.gravity.y = 500;
 
-		// create a group for stars
+// create a group for stars
 		this.stars = game.add.group();
 		this.stars.enableBody = true;
 		this.game.physics.p2.enable(this.stars);
 
-		//  Here we'll create 12 of them evenly spaced apart
+//  Here we'll create 12 of them evenly spaced apart
 		for (var i = 0; i < 12; i++)
 		{
 			//  Create a star inside of the 'stars' group
@@ -48,43 +73,48 @@ Level.prototype = {
 	},
 
 	flipMap: function() {
-		setUpMapSwitch();
+		this.setUpMapSwitch();
 	},
 
 	update: function() {
+	},
+
+
+	setUpMapSwitch: function() {
+		console.log("SetUpMapSwitch");
+		this.game.stage.backgroundColor = '#2d2d2d';
+
+		this.map = this.game.add.tilemap('map');
+		this.map.removeAllLayers();
+		this.map.destroy();
+		//this.layer // do something here to remove old sprites
+
+		this.map = this.game.add.tilemap('map');
+
+		this.map.addTilesetImage('ground_1x1');
+		if(this.flipSwitch) {
+			//this.layer = this.map.createBlankLayer();
+			this.currentLayer = this.layer[1];
+			this.layer[0].alpha = 0.2;
+			this.layer[1].alpha = 1;
+			this.flipSwitch = false;
+		}
+		else {
+			this.currentLayer = this.layer[0];
+			this.layer[0].alpha = 1;
+			this.layer[1].alpha = 0.2;
+			this.flipSwitch = true;
+		}
+
+		// clear old collisions first
+		this.map.setCollisionBetween(1, 12, false, this.currentLayer, true);
+		//  Set the tiles for collision.
+		//  Do this BEFORE generating the p2 bodies below.
+		this.map.setCollisionBetween(1, 12, true, this.currentLayer, true);
+
+		//  Convert the tilemap layer into bodies. Only tiles that collide (see above) are created.
+		//  This call returns an array of body objects which you can perform addition actions on if
+		//  required. There is also a parameter to control optimising the map build.
+		this.mapObjects = this.game.physics.p2.convertTilemap(this.map, this.currentLayer);
 	}
 };
-
-
-function setUpMapSwitch() {
-	console.log("SetUpMapSwitch");
-	this.game.stage.backgroundColor = '#2d2d2d';
-
-	this.map = this.game.add.tilemap('map');
-	this.map.removeAllLayers();
-	this.map.destroy();
-	this.layer
-
-	this.map = this.game.add.tilemap('map');
-
-	this.map.addTilesetImage('ground_1x1');
-
-	if(this.flipSwitch) {
-		this.layer = this.map.createLayer('upsideDown');
-		this.flipSwitch = false;
-	}
-	else {
-		this.layer = this.map.createLayer('Tile Layer 1');
-		this.flipSwitch = true;
-	}
-	this.layer.resizeWorld();
-
-	//  Set the tiles for collision.
-	//  Do this BEFORE generating the p2 bodies below.
-	this.map.setCollisionBetween(1, 12, true, this.layer, true);
-
-	//  Convert the tilemap layer into bodies. Only tiles that collide (see above) are created.
-	//  This call returns an array of body objects which you can perform addition actions on if
-	//  required. There is also a parameter to control optimising the map build.
-	this.game.physics.p2.convertTilemap(this.map, this.layer);
-}
