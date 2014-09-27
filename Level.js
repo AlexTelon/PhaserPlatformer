@@ -49,17 +49,17 @@ Level.prototype = {
 		//  Convert the tilemap layer into bodies. Only tiles that collide (see above) are created.
 		//  This call returns an array of body objects which you can perform addition actions on if
 		//  required. There is also a parameter to control optimising the map build.
-		this.game.physics.p2.convertTilemap(this.map, this.currentLayer);
+		this.mapObjects = this.game.physics.p2.convertTilemap(this.map, this.currentLayer);
 
 		game.physics.p2.restitution = 0;
 		game.physics.p2.gravity.y = 500;
 
-// create a group for stars
+		// create a group for stars
 		this.stars = game.add.group();
 		this.stars.enableBody = true;
 		this.game.physics.p2.enable(this.stars);
 
-//  Here we'll create 12 of them evenly spaced apart
+		//  Here we'll create 12 of them evenly spaced apart
 		for (var i = 0; i < 12; i++)
 		{
 			//  Create a star inside of the 'stars' group
@@ -79,18 +79,31 @@ Level.prototype = {
 	update: function() {
 	},
 
-
 	setUpMapSwitch: function() {
 		console.log("SetUpMapSwitch");
+		this.mapObjects.forEach(function(obj) {
+			// TODO this might be really inefficent..
+			// And I thinkg setCollisionBetween(1,12,false...) should do this instead.
+			obj.clearShapes();
+		});
+		//console.log("mapObjects");
+		//console.log(this.mapObjects);
+
 		this.game.stage.backgroundColor = '#2d2d2d';
 
-		this.map = this.game.add.tilemap('map');
 		this.map.removeAllLayers();
 		this.map.destroy();
 		//this.layer // do something here to remove old sprites
 
 		this.map = this.game.add.tilemap('map');
-
+		this.map = this.game.add.tilemap('map');
+		this.map = this.game.add.tilemap('map');
+		this.map = this.game.add.tilemap('map');
+		this.map = this.game.add.tilemap('map');
+		this.map = this.game.add.tilemap('map');
+		this.map = this.game.add.tilemap('map');
+		this.map = this.game.add.tilemap('map');
+		console.log(this.map.game);
 		this.map.addTilesetImage('ground_1x1');
 		if(this.flipSwitch) {
 			//this.layer = this.map.createBlankLayer();
@@ -107,7 +120,8 @@ Level.prototype = {
 		}
 
 		// clear old collisions first
-		this.map.setCollisionBetween(1, 12, false, this.currentLayer, true);
+		// wont work..
+		//this.map.setCollisionBetween(1, 12, false, this.currentLayer, true);
 		//  Set the tiles for collision.
 		//  Do this BEFORE generating the p2 bodies below.
 		this.map.setCollisionBetween(1, 12, true, this.currentLayer, true);
@@ -116,5 +130,6 @@ Level.prototype = {
 		//  This call returns an array of body objects which you can perform addition actions on if
 		//  required. There is also a parameter to control optimising the map build.
 		this.mapObjects = this.game.physics.p2.convertTilemap(this.map, this.currentLayer);
+
 	}
 };
