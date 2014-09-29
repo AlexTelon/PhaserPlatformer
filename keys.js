@@ -10,7 +10,6 @@ Keys = function(game, level, player) {
 
 	// Key thingies
 	this.cursors = null;
-	this.jumpButton = null;
 	this.flipWorld = null;
 };
 

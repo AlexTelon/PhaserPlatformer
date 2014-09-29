@@ -6,7 +6,6 @@ Level = function(game) {
 	this.map = null;
 	this.layer = [];
 	this.currentLayer = null;
-	this.gravityDir = 1;
 	this.flipSwitch = false;
 
 	this.mapObjects = null;
@@ -16,7 +15,6 @@ Level.prototype = {
 
 	preload: function() {
 		console.log("preload level");
-		console.log("WE LOAD A NEW MAP");
 		game.load.tilemap('map', 'level1.json', null, Phaser.Tilemap.TILED_JSON);
 		game.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
 		game.load.image('coin', 'assets/sprites/coin.png');
@@ -27,8 +25,7 @@ Level.prototype = {
 
 		game.physics.startSystem(Phaser.Physics.P2JS);
 
-		//Setup the world and the upside down world
-
+		//Setup both the world and the upside down world
 		this.game.stage.backgroundColor = '#2d2d2d';
 		this.map = this.game.add.tilemap('map');
 
@@ -89,20 +86,16 @@ Level.prototype = {
 			// And I thinkg setCollisionBetween(1,12,false...) should do this instead.
 			obj.clearShapes();
 		});
-		//console.log("mapObjects");
-		//console.log(this.mapObjects);
 
 		this.game.stage.backgroundColor = '#2d2d2d';
 
-		this.map.removeAllLayers();
-		this.map.destroy();
-		//this.layer // do something here to remove old sprites
-
+		this.map.removeAllLayers(); // is this needed?
+		this.map.destroy(); // is this needed?
+		// TODO this probably is the bottleneck, flipping the map makes the game REALLY slow after a while.
 		this.map = this.game.add.tilemap('map');
 		console.log(this.map.game);
 		this.map.addTilesetImage('ground_1x1');
 		if(this.flipSwitch) {
-			//this.layer = this.map.createBlankLayer();
 			this.currentLayer = this.layer[1];
 			this.layer[0].alpha = 0.1;
 			this.layer[1].alpha = 1;
@@ -115,9 +108,6 @@ Level.prototype = {
 			this.flipSwitch = true;
 		}
 
-		// clear old collisions first
-		// wont work..
-		//this.map.setCollisionBetween(1, 12, false, this.currentLayer, true);
 		//  Set the tiles for collision.
 		//  Do this BEFORE generating the p2 bodies below.
 		this.map.setCollisionBetween(1, 12, true, this.currentLayer, true);
@@ -126,6 +116,5 @@ Level.prototype = {
 		//  This call returns an array of body objects which you can perform addition actions on if
 		//  required. There is also a parameter to control optimising the map build.
 		this.mapObjects = this.game.physics.p2.convertTilemap(this.map, this.currentLayer);
-
 	}
 };
