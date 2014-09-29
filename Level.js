@@ -16,10 +16,10 @@ Level.prototype = {
 
 	preload: function() {
 		console.log("preload level");
-		game.load.tilemap('map', 'tile_collision_test.json', null, Phaser.Tilemap.TILED_JSON);
+		console.log("WE LOAD A NEW MAP");
+		game.load.tilemap('map', 'level1.json', null, Phaser.Tilemap.TILED_JSON);
 		game.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
-		game.load.image('walls_1x2', 'assets/tilemaps/tiles/walls_1x2.png');
-		game.load.image('tiles2', 'assets/tilemaps/tiles/tiles2.png');
+		game.load.image('coin', 'assets/sprites/coin.png');
 	},
 
 	create: function() {
@@ -33,6 +33,7 @@ Level.prototype = {
 		this.map = this.game.add.tilemap('map');
 
 		this.map.addTilesetImage('ground_1x1');
+		this.map.addTilesetImage('coin');
 
 		this.layer[1] = this.map.createLayer('upsideDown');
 		this.layer[1].resizeWorld();
@@ -40,6 +41,8 @@ Level.prototype = {
 		this.layer[0] = this.map.createLayer('Tile Layer 1');
 		this.layer[0].resizeWorld();
 
+		this.layer[0].alpha = 1;
+		this.layer[1].alpha = 0.1;
 		this.currentLayer = this.layer[0];
 
 		//  Set the tiles for collision.
@@ -96,26 +99,19 @@ Level.prototype = {
 		//this.layer // do something here to remove old sprites
 
 		this.map = this.game.add.tilemap('map');
-		this.map = this.game.add.tilemap('map');
-		this.map = this.game.add.tilemap('map');
-		this.map = this.game.add.tilemap('map');
-		this.map = this.game.add.tilemap('map');
-		this.map = this.game.add.tilemap('map');
-		this.map = this.game.add.tilemap('map');
-		this.map = this.game.add.tilemap('map');
 		console.log(this.map.game);
 		this.map.addTilesetImage('ground_1x1');
 		if(this.flipSwitch) {
 			//this.layer = this.map.createBlankLayer();
 			this.currentLayer = this.layer[1];
-			this.layer[0].alpha = 0.2;
+			this.layer[0].alpha = 0.1;
 			this.layer[1].alpha = 1;
 			this.flipSwitch = false;
 		}
 		else {
 			this.currentLayer = this.layer[0];
 			this.layer[0].alpha = 1;
-			this.layer[1].alpha = 0.2;
+			this.layer[1].alpha = 0.1;
 			this.flipSwitch = true;
 		}
 

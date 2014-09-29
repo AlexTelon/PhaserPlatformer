@@ -46,10 +46,5 @@ Player.prototype = {
 
 	update: function() {
 	// nothing to do now that keyboard handling is in keys.js instead.
-	},
-
-	flip: function() {
-		console.log("Filp player");
 	}
-
 };
