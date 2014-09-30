@@ -32,16 +32,20 @@ Player.prototype = {
 
 	    this.cursors = this.game.input.keyboard.createCursorKeys();
 		this.game.camera.follow(this.player);
-		return this.player;
+		console.log("player sends back itself:");
+		console.log(this.player);
+		console.log(this);
+		return this;
 	},
 
-	collectStar: function(player, star) {
-	    // Removes the star from the screen
-	    star.kill();
+	collectCoin: function () {
+		// Right now this code could be in level directly. If no powerups or changes to the player
+		// are to be made this should be moved there to reduce coupling between "classes"
 
 	    //  Add and update the score
-	    hud.score += 10;
-	    hud.scoreText.text = 'Score: ' + hud.score;
+	   	console.log("COLLECTED A COIN BITCHES!");
+	   // hud.score += 10;
+	    //hud.scoreText.text = 'Score: ' + hud.score;
 	},
 
 	update: function() {

@@ -22,8 +22,10 @@ function create()
 {
 	level.create();
 	player = player.create();
-	keys.create(player); // we need to update player again so that player has a body.
+	level.setPlayer(player); // ugly, will refactor later
+	keys.create(player.player); // we need to update player again so that player has a body.
 	hud.create();
+
 }
 
 function update()

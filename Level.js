@@ -2,7 +2,7 @@
 Level = function(game) {
 
 	this.game = game;
-	this.stars = null;
+	this.player = null;
 	this.map = null;
 	this.layer = [];
 	this.currentLayer = null;
@@ -15,7 +15,7 @@ Level.prototype = {
 
 	preload: function() {
 		console.log("preload level");
-		game.load.tilemap('map', 'level1.json', null, Phaser.Tilemap.TILED_JSON);
+		game.load.tilemap('map', 'levels.json', null, Phaser.Tilemap.TILED_JSON);
 		game.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
 		game.load.image('coin', 'assets/sprites/coin.png');
 	},
@@ -32,15 +32,43 @@ Level.prototype = {
 		this.map.addTilesetImage('ground_1x1');
 		this.map.addTilesetImage('coin');
 
-		this.layer[1] = this.map.createLayer('upsideDown');
+		this.layer[1] = this.map.createLayer('level3UD');
 		this.layer[1].resizeWorld();
 
-		this.layer[0] = this.map.createLayer('Tile Layer 1');
+		this.layer[0] = this.map.createLayer('level3');
 		this.layer[0].resizeWorld();
 
 		this.layer[0].alpha = 1;
 		this.layer[1].alpha = 0.1;
 		this.currentLayer = this.layer[0];
+
+
+
+
+		game.physics.p2.restitution = 0;
+		game.physics.p2.gravity.y = 500;
+	},
+
+	flipMap: function() {
+		this.setUpMapSwitch();
+	},
+
+	// Ugly as we have to do some of our create() things here.
+	setPlayer: function(player) {
+		this.player = player;
+
+
+		console.log(this.game.physics);
+		//this.game.physics.collide(this.player, this.map);
+		// setup overlap detection between the coin tile and player
+		// this.player as a callback context might be wrong, only this instead?
+		this.map.setTileLocationCallback(45,2,1,1, this.player.collectCoin, this.player, this.layer[0]);
+		this.map.setTileLocationCallback(1,10,2,2, this.player.collectCoin, this.player, this.layer[0]);
+		this.map.setTileLocationCallback(45,15,2,2, this.player.collectCoin, this.player, this.layer[1]);
+		this.map.setTileLocationCallback(1,7,1,1, this.player.collectCoin, this.player, this.layer[1]);
+		console.log("the location callback is in place")
+		console.log(this.map.getTile(1,10,this.layer[0]));
+		console.log("now we MUST figure out how these callbacks are to be triggerd");
 
 		//  Set the tiles for collision.
 		//  Do this BEFORE generating the p2 bodies below.
@@ -50,30 +78,6 @@ Level.prototype = {
 		//  This call returns an array of body objects which you can perform addition actions on if
 		//  required. There is also a parameter to control optimising the map build.
 		this.mapObjects = this.game.physics.p2.convertTilemap(this.map, this.currentLayer);
-
-		game.physics.p2.restitution = 0;
-		game.physics.p2.gravity.y = 500;
-
-		// create a group for stars
-		this.stars = game.add.group();
-		this.stars.enableBody = true;
-		this.game.physics.p2.enable(this.stars);
-
-		//  Here we'll create 12 of them evenly spaced apart
-		for (var i = 0; i < 12; i++)
-		{
-			//  Create a star inside of the 'stars' group
-			var star = this.stars.create(i * 70, 0, 'star');
-			//  Let gravity do its thing
-			star.body.gravity.y = 700;
-
-			//  This just gives each star a slightly random bounce value
-			star.body.bounce.y = 0.7 + Math.random() * 0.2;
-		}
-	},
-
-	flipMap: function() {
-		this.setUpMapSwitch();
 	},
 
 	update: function() {
