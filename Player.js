@@ -10,12 +10,10 @@ Player = function(game) {
 Player.prototype = {
 
 	preload: function () {
-		console.log("preload player");
 		this.game.load.spritesheet('dude', 'assets/games/starstruck/dude.png', 32, 48);
 	},
 
 	create: function () {
-		console.log("create player");
 
 		this.player = game.add.sprite(100, 200, 'dude');
 		console.log(this.game.physics);
@@ -43,9 +41,9 @@ Player.prototype = {
 		// are to be made this should be moved there to reduce coupling between "classes"
 
 	    //  Add and update the score
-	   	console.log("COLLECTED A COIN BITCHES!");
-	   // hud.score += 10;
-	    //hud.scoreText.text = 'Score: ' + hud.score;
+	 //  	console.log("COLLECTED A COIN BITCHES!");
+	    hud.score += 10;
+	    hud.scoreText.text = 'Score: ' + hud.score;
 	},
 
 	update: function() {

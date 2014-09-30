@@ -22,7 +22,6 @@ Keys.prototype = {
 
 		// Keys
 		this.flipWorld = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
-//		this.flipWorld.onDown.add(this.player.flip, this.player);
 		this.flipWorld.onDown.add(this.level.flipMap, this.level);
 	},
 

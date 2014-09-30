@@ -14,15 +14,12 @@ Level = function(game) {
 Level.prototype = {
 
 	preload: function() {
-		console.log("preload level");
 		game.load.tilemap('map', 'levels.json', null, Phaser.Tilemap.TILED_JSON);
 		game.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
 		game.load.image('coin', 'assets/sprites/coin.png');
 	},
 
 	create: function() {
-		console.log("create level");
-
 		game.physics.startSystem(Phaser.Physics.P2JS);
 
 		//Setup both the world and the upside down world
