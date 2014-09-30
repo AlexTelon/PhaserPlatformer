@@ -27,6 +27,7 @@ Keys.prototype = {
 	},
 
 	update: function() {
+		// TODO keys should maybe only handle keys and let the player move itself?
 		this.player.body.velocity.x = 0;
 
 		if(this.cursors.left.isDown)
@@ -52,6 +53,15 @@ Keys.prototype = {
 		{
 			this.player.body.moveUp(300);
 		}
+
+		// gives the user more options to steer the player in the air
+		this.player.body.data.gravityScale = 1;
+		if (this.cursors.up.isDown) {
+			this.player.body.data.gravityScale = 0.8;
+		} else if (this.cursors.down.isDown) {
+			this.player.body.data.gravityScale = 1.2;
+		}
+
 	}
 };
 

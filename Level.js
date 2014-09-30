@@ -39,11 +39,8 @@ Level.prototype = {
 		this.layer[0].resizeWorld();
 
 		this.layer[0].alpha = 1;
-		this.layer[1].alpha = 0.1;
+		this.layer[1].alpha = 0.3;
 		this.currentLayer = this.layer[0];
-
-
-
 
 		game.physics.p2.restitution = 0;
 		game.physics.p2.gravity.y = 500;
@@ -101,14 +98,14 @@ Level.prototype = {
 		this.map.addTilesetImage('ground_1x1');
 		if(this.flipSwitch) {
 			this.currentLayer = this.layer[1];
-			this.layer[0].alpha = 0.1;
+			this.layer[0].alpha = 0.3;
 			this.layer[1].alpha = 1;
 			this.flipSwitch = false;
 		}
 		else {
 			this.currentLayer = this.layer[0];
 			this.layer[0].alpha = 1;
-			this.layer[1].alpha = 0.1;
+			this.layer[1].alpha = 0.3;
 			this.flipSwitch = true;
 		}
 
