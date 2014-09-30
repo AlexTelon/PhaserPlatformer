@@ -5,6 +5,8 @@ Player = function(game) {
 	this.game = game;
 	this.player= null;
 	this.cursors = null;
+	this.startXPos = 100;
+	this.startYPos = 200;
 };
 
 Player.prototype = {
@@ -15,7 +17,7 @@ Player.prototype = {
 
 	create: function () {
 
-		this.player = game.add.sprite(100, 200, 'dude');
+		this.player = game.add.sprite(this.startXPos, this.startYPos, 'dude');
 		console.log(this.game.physics);
 		console.log(this.game.physics.p2);
 
@@ -29,10 +31,7 @@ Player.prototype = {
 		this.player.animations.add('right', [5, 6, 7, 8], 10, true);
 
 	    this.cursors = this.game.input.keyboard.createCursorKeys();
-		this.game.camera.follow(this.player);
-		console.log("player sends back itself:");
-		console.log(this.player);
-		console.log(this);
+		this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON);
 		return this;
 	},
 
@@ -48,5 +47,15 @@ Player.prototype = {
 
 	update: function() {
 	// nothing to do now that keyboard handling is in keys.js instead.
+	},
+
+	setStartPos: function(x,y) {
+		this.startXPos = x;
+		this.startYPos = y;
+	},
+
+	dieAndRepeat: function() {
+		this.player.sprite.kill();
+		this.player.sprite.reset(this.startXPos, this.startYPos);
 	}
 };

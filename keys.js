@@ -58,7 +58,7 @@ Keys.prototype = {
 		if (this.cursors.up.isDown) {
 			this.player.body.data.gravityScale = 0.8;
 		} else if (this.cursors.down.isDown) {
-			this.player.body.data.gravityScale = 1.2;
+			this.player.body.data.gravityScale = 1.5;
 		}
 
 	}

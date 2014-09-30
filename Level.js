@@ -32,7 +32,7 @@ Level.prototype = {
 		this.layer[1] = this.map.createLayer('level3UD');
 		this.layer[1].resizeWorld();
 
-		this.layer[0] = this.map.createLayer('level3');
+		this.layer[0] = this.map.createLayer('level1');
 		this.layer[0].resizeWorld();
 
 		this.layer[0].alpha = 1;
@@ -50,8 +50,8 @@ Level.prototype = {
 	// Ugly as we have to do some of our create() things here.
 	setPlayer: function(player) {
 		this.player = player;
-
-
+		this.player.setStartPos(300,200);
+	this.player.body.createBodyCallback();
 		console.log(this.game.physics);
 		//this.game.physics.collide(this.player, this.map);
 		// setup overlap detection between the coin tile and player
@@ -72,13 +72,14 @@ Level.prototype = {
 		//  This call returns an array of body objects which you can perform addition actions on if
 		//  required. There is also a parameter to control optimising the map build.
 		this.mapObjects = this.game.physics.p2.convertTilemap(this.map, this.currentLayer);
+
+		this.game.physics.p2.setImpactEvents(true);
 	},
 
 	update: function() {
 	},
 
 	setUpMapSwitch: function() {
-		console.log("SetUpMapSwitch");
 		this.mapObjects.forEach(function(obj) {
 			// TODO this might be really inefficent..
 			// And I thinkg setCollisionBetween(1,12,false...) should do this instead.
@@ -87,22 +88,20 @@ Level.prototype = {
 
 		this.game.stage.backgroundColor = '#2d2d2d';
 
-		this.map.removeAllLayers(); // is this needed?
-		this.map.destroy(); // is this needed?
 		// TODO this probably is the bottleneck, flipping the map makes the game REALLY slow after a while.
 		this.map = this.game.add.tilemap('map');
 		console.log(this.map.game);
 		this.map.addTilesetImage('ground_1x1');
 		if(this.flipSwitch) {
-			this.currentLayer = this.layer[1];
-			this.layer[0].alpha = 0.3;
-			this.layer[1].alpha = 1;
-			this.flipSwitch = false;
-		}
-		else {
 			this.currentLayer = this.layer[0];
 			this.layer[0].alpha = 1;
 			this.layer[1].alpha = 0.3;
+			this.flipSwitch = false;
+		}
+		else {
+			this.currentLayer = this.layer[1];
+			this.layer[0].alpha = 0.3;
+			this.layer[1].alpha = 1;
 			this.flipSwitch = true;
 		}
 
