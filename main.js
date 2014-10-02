@@ -7,11 +7,11 @@ var keys = null;
 
 function preload()
 {
-	level = new Level(game);
-	level.preload();
-
 	player = new Player(game);
 	player.preload();
+
+	level = new Level(game, player);
+	level.preload();
 
 	keys = new Keys(game, level, player); //this hurts a little to do.. If I have time I will look into this.
 
@@ -20,10 +20,10 @@ function preload()
 
 function create()
 {
+	// must run player before level
+	player.create();
 	level.create();
-	player = player.create();
-	level.setPlayer(player); // ugly, will refactor later
-	keys.create(player.player); // we need to update player again so that player has a body.
+	keys.create(player.sprite); // we need to update player again so that player has a body.
 	hud.create();
 }
 
