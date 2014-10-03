@@ -125,8 +125,8 @@ Level.prototype = {
 			console.log(coin.body);
 			console.log(this.playerCollisionGroup);
 			console.log(coin.body.setCollisionGroup);
-			coin.body.setCollisionGroup(this.coinCollisionGroup);
-			coin.body.collides(this.playerCollisionGroup);
+		//	coin.body.setCollisionGroup(this.coinCollisionGroup);
+		//	coin.body.collides(this.playerCollisionGroup);
 		}
 
 		//  Add animations to all of the coin sprites
@@ -203,6 +203,13 @@ Level.prototype = {
 		//  This call returns an array of body objects which you can perform addition actions on if
 		//  required. There is also a parameter to control optimising the map build.
 		this.mapObjects = this.game.physics.p2.convertTilemap(this.map, this.currentLayer);
+
+		this.mapObjects.forEach(function(body) {
+			body.setCollisionGroup(this.mapCollisionGroup);
+			body.collides([this.mapCollisionGroup, this.playerCollisionGroup]);
+			//	this.mapGroup.addBody(body);
+			//body.setCollision(this.playerCollisionGroup);
+		}, this);
 	}
 
 };
