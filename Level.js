@@ -14,13 +14,12 @@ Level = function(game, player) {
 Level.prototype = {
 
 	preload: function() {
-		game.load.tilemap('map', 'levels.json', null, Phaser.Tilemap.TILED_JSON);
+		game.load.tilemap('map', 'levels2.json', null, Phaser.Tilemap.TILED_JSON);
 		game.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
 		game.load.spritesheet('coin', 'assets/sprites/coin.png', 32, 32);
 
 		game.load.image('stars', 'assets/misc/starfield.jpg');
 		game.load.spritesheet('ship', 'assets/sprites/humstar.png', 32, 32);
-		game.load.image('panda', 'assets/sprites/spinObj_01.png');
 		game.load.image('sweet', 'assets/sprites/spinObj_06.png');
 
 		game.physics.startSystem(Phaser.Physics.P2JS);
@@ -31,7 +30,7 @@ Level.prototype = {
 		// so we get collision callbacks
 		this.game.physics.p2.setImpactEvents(true);
 		this.game.physics.p2.restitution = 0;
-		this.game.physics.p2.gravity.y = 500;
+		this.game.physics.p2.gravity.y = 0;
 
 
 		//  Create our collision groups. One for the player, one for the pandas
@@ -57,17 +56,11 @@ Level.prototype = {
 		ship.body.setCollisionGroup(this.playerCollisionGroup);
 		this.player.sprite.body.setCollisionGroup(this.playerCollisionGroup);
 
-		//  The ship will collide with the pandas, and when it strikes one the hitPanda callback will fire, causing it to alpha out a bit
-		//  When pandas collide with each other, nothing happens to them.
-	//	ship.body.collides(pandaCollisionGroup, hitPanda, this);
-
-		game.camera.follow(ship);
-
 		cursors = game.input.keyboard.createCursorKeys();
 
 		this.player.setStartPos(300,200);
 
-		//Setup both the different levels
+		//Setup the different levels
 
 		this.game.stage.backgroundColor = '#2d2d2d';
 		this.map = this.game.add.tilemap('map');
@@ -113,32 +106,27 @@ Level.prototype = {
 
 		this.coinGroup = this.game.add.group();
 		this.coinGroup.enableBody = true;
-		//this.coinGroup.physicsBodyType = Phaser.Physics.P2JS;
+		this.coinGroup.physicsBodyType = Phaser.Physics.P2JS;
 
 		// Använd nedanstående grej för att skapa coin sprites och gör sedan normala collisioner med dem! :)
 		this.map.createFromObjects('level2OBJ', 26, 'coin', 0, true, false, this.coinGroup);
 
-		this.coinCollisionGroup = this.game.physics.p2.createCollisionGroup();
+		this.coinCollisionGroup = this.game.physics.p2.createCollisionGroup(this.coinGroup);
 
 		for (var i = 0; i < this.coinGroup.length; i++) {
-			var coin = this.coinGroup.getAt(i);
-			console.log(coin.body);
-			console.log(this.playerCollisionGroup);
-			console.log(coin.body.setCollisionGroup);
-		//	coin.body.setCollisionGroup(this.coinCollisionGroup);
-		//	coin.body.collides(this.playerCollisionGroup);
+			var coin = this.coinGroup.getAt(i).body;
+			console.log("coingroup things:");
+			coin.setCollisionGroup(this.mapCollisionGroup);
+			// ALMOST DONE! COLLISION WORKS WITH .collides([group1, group2], callbackFunction); Though we dont want the collision part of
+			// it so im trying this right now.
+			coin.createGroupCallback(this.mapCollisionGroup, function() {console.log("collision!");}, this );
+			coin.createGroupCallback(this.playerCollisionGroup, function() {console.log("collision!");}, this );
+
 		}
 
 		//  Add animations to all of the coin sprites
 		this.coinGroup.callAll('animations.add', 'animations', 'spin', [0, 1, 2, 3, 4, 5], 10, true);
 		this.coinGroup.callAll('animations.play', 'animations', 'spin');
-		//this.coinGroup.callAll('body.setCollisionGroup', this, this.mapCollisionGroup);
-		//this.coinGroup.callAll('body.collides', this, this.playerCollisionGroup);
-
-
-		//this.player.sprite.body.collides(this.coinCollisionGroup, function() {console.log("coin");}, this);
-		//ship.body.collides(this.coinCollisionGroup);
-
 
 	},
 
@@ -213,12 +201,3 @@ Level.prototype = {
 	}
 
 };
-
-function hitPanda(body1, body2) {
-
-	//  body1 is the space ship (as it's the body that owns the callback)
-	//  body2 is the body it impacted with, in this case our panda
-	//  As body2 is a Phaser.Physics.P2.Body object, you access its own (the sprite) via the sprite property:
-	body2.sprite.alpha -= 0.1;
-
-}
