@@ -40,25 +40,9 @@ Level.prototype = {
 		//  (which we do) - what this does is adjust the bounds to use its own collision group.
 		game.physics.p2.updateBoundsCollisionGroup();
 
-		//  Create our ship sprite
-		ship = game.add.sprite(300, 200, 'ship');
-		ship.name = 'player';
-		ship.scale.set(2);
-		ship.smoothed = false;
-		ship.animations.add('fly', [0,1,2,3,4,5], 10, true);
-		ship.play('fly');
-
-		game.physics.p2.enable(ship, false);
-		ship.body.setCircle(28);
-		ship.body.fixedRotation = true;
-
-		//  Set the ships collision group
-		ship.body.setCollisionGroup(this.playerCollisionGroup);
 		this.player.sprite.body.setCollisionGroup(this.playerCollisionGroup);
 
-		cursors = game.input.keyboard.createCursorKeys();
-
-		this.player.setStartPos(300,200);
+		this.player.setStartPos(100,200);
 
 		//Setup the different levels
 
@@ -92,17 +76,9 @@ Level.prototype = {
 		this.mapObjects.forEach(function(body) {
 			body.setCollisionGroup(this.mapCollisionGroup);
 			body.collides([this.mapCollisionGroup, this.playerCollisionGroup]);
-			//	this.mapGroup.addBody(body);
-			//body.setCollision(this.playerCollisionGroup);
 		}, this);
 
-		ship.body.collides(this.mapCollisionGroup);
 		this.player.sprite.body.collides(this.mapCollisionGroup);
-
-		// Setup all collisions
-		//	this.playerCollisionGroup = this.game.physics.p2.createCollisionGroup();
-//		this.game.physics.p2.updateBoundsCollisionGroup();
-
 
 		this.coinGroup = this.game.add.group();
 		this.coinGroup.enableBody = true;
@@ -111,27 +87,16 @@ Level.prototype = {
 		// Använd nedanstående grej för att skapa coin sprites och gör sedan normala collisioner med dem! :)
 		this.map.createFromObjects('level2OBJ', 26, 'coin', 0, true, false, this.coinGroup);
 
-		this.coinCollisionGroup = this.game.physics.p2.createCollisionGroup(this.coinGroup);
-
 		for (var i = 0; i < this.coinGroup.length; i++) {
 			var coin = this.coinGroup.getAt(i).body;
 			coin.setCollisionGroup(this.mapCollisionGroup);
-			// ALMOST DONE! COLLISION WORKS WITH .collides([group1, group2], callbackFunction); Though we dont want the collision part of
-			// it so im trying this right now...
-			coin.createGroupCallback(this.mapCollisionGroup, function() {console.log("collision!");}, this );
-			coin.createGroupCallback(this.playerCollisionGroup, function() {console.log("collision!");}, this );
 		}
 
 		//  Add animations to all of the coin sprites
 		this.coinGroup.callAll('animations.add', 'animations', 'spin', [0, 1, 2, 3, 4, 5], 10, true);
 		this.coinGroup.callAll('animations.play', 'animations', 'spin');
-		//this.coinGroup.callAll('body.setCollisionGroup', this, this.mapCollisionGroup);
-		//this.coinGroup.callAll('body.collides', this, this.playerCollisionGroup);
 
 		game.physics.p2.setPostBroadphaseCallback(checkCollision, this);
-		//this.player.sprite.body.collides(this.coinCollisionGroup, function() {console.log("coin");}, this);
-		//ship.body.collides(this.coinCollisionGroup);
-
 
 	},
 
@@ -140,27 +105,6 @@ Level.prototype = {
 	},
 
 	update: function() {
-
-		ship.body.setZeroVelocity();
-
-		if (cursors.left.isDown)
-		{
-			ship.body.moveLeft(200);
-		}
-		else if (cursors.right.isDown)
-		{
-			ship.body.moveRight(200);
-		}
-
-		if (cursors.up.isDown)
-		{
-			ship.body.moveUp(200);
-		}
-		else if (cursors.down.isDown)
-		{
-			ship.body.moveDown(200);
-		}
-
 	},
 
 	setUpMapSwitch: function() {

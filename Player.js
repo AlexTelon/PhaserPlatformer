@@ -5,7 +5,7 @@ Player = function(game) {
 	this.game = game;
 	this.sprite= null;
 	this.cursors = null;
-	this.startXPos = 200;
+	this.startXPos = 100;
 	this.startYPos = 200;
 };
 
@@ -18,7 +18,7 @@ Player.prototype = {
 	create: function () {
 
 		this.sprite = game.add.sprite(this.startXPos, this.startYPos, 'dude');
-	//	this.sprite.name = 'player';
+		this.sprite.name = 'player';
 		this.game.physics.p2.enable(this.sprite);
 		this.sprite.body.fixedRotation = true;
 		this.sprite.body.gravity.y = 500;
@@ -38,7 +38,6 @@ Player.prototype = {
 		// are to be made this should be moved there to reduce coupling between "classes"
 
 		//  Add and update the score
-		//  	console.log("COLLECTED A COIN BITCHES!");
 		hud.score += 10;
 		hud.scoreText.text = 'Score: ' + hud.score;
 	},
@@ -53,7 +52,7 @@ Player.prototype = {
 	},
 
 	dieAndRepeat: function() {
-		this.sprite.sprite.kill();
-		this.sprite.sprite.reset(this.startXPos, this.startYPos);
+		this.sprite.kill();
+		this.sprite.reset(this.startXPos, this.startYPos);
 	}
 };
