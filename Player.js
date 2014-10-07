@@ -7,6 +7,7 @@ Player = function(game) {
 	this.cursors = null;
 	this.startXPos = 100;
 	this.startYPos = 200;
+	this.deathCounter = 0;
 };
 
 Player.prototype = {
@@ -22,7 +23,10 @@ Player.prototype = {
 		this.game.physics.p2.enable(this.sprite);
 		this.sprite.body.fixedRotation = true;
 		this.sprite.body.gravity.y = 500;
-		this.sprite.body.collideWorldBounds = true;
+		this.sprite.checkWorldBounds = true;
+
+		// The player dies if it hits the edges of the map.
+		this.sprite.events.onOutOfBounds.add(this.handleEventualDeath, this);
 
 		this.sprite.animations.add('left', [0, 1, 2, 3], 10, true);
 		this.sprite.animations.add('turn', [4], 20, true);
@@ -39,7 +43,7 @@ Player.prototype = {
 
 		//  Add and update the score
 		hud.score += 10;
-		hud.scoreText.text = 'Score: ' + hud.score;
+		hud.scoreText.text = 'Score: ' + hud.score + ' Deaths: ' + this.deathCounter;
 	},
 
 	update: function() {
@@ -54,5 +58,16 @@ Player.prototype = {
 	dieAndRepeat: function() {
 		this.sprite.kill();
 		this.sprite.reset(this.startXPos, this.startYPos);
+		this.deathCounter += 1;
+		console.log(this.deathCounter);
+		hud.scoreText.text = 'Score: ' + hud.score + ' Deaths: ' + this.deathCounter;
+	},
+
+	handleEventualDeath: function() {
+		//TODO change so we wont die buy jumping to high, and add animation
+		// Right now only kill directly, TODO add animation later
+		this.dieAndRepeat();
 	}
+
+
 };
