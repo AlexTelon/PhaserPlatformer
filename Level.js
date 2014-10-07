@@ -30,7 +30,7 @@ Level.prototype = {
 		// so we get collision callbacks
 		this.game.physics.p2.setImpactEvents(true);
 		this.game.physics.p2.restitution = 0;
-		this.game.physics.p2.gravity.y = 0;
+		this.game.physics.p2.gravity.y = 500;
 
 
 		//  Create our collision groups. One for the player, one for the pandas
@@ -40,9 +40,9 @@ Level.prototype = {
 		//  (which we do) - what this does is adjust the bounds to use its own collision group.
 		game.physics.p2.updateBoundsCollisionGroup();
 
-
 		//  Create our ship sprite
-		ship = game.add.sprite(200, 200, 'ship');
+		ship = game.add.sprite(300, 200, 'ship');
+		ship.name = 'player';
 		ship.scale.set(2);
 		ship.smoothed = false;
 		ship.animations.add('fly', [0,1,2,3,4,5], 10, true);
@@ -92,7 +92,7 @@ Level.prototype = {
 		this.mapObjects.forEach(function(body) {
 			body.setCollisionGroup(this.mapCollisionGroup);
 			body.collides([this.mapCollisionGroup, this.playerCollisionGroup]);
-		//	this.mapGroup.addBody(body);
+			//	this.mapGroup.addBody(body);
 			//body.setCollision(this.playerCollisionGroup);
 		}, this);
 
@@ -100,7 +100,7 @@ Level.prototype = {
 		this.player.sprite.body.collides(this.mapCollisionGroup);
 
 		// Setup all collisions
-	//	this.playerCollisionGroup = this.game.physics.p2.createCollisionGroup();
+		//	this.playerCollisionGroup = this.game.physics.p2.createCollisionGroup();
 //		this.game.physics.p2.updateBoundsCollisionGroup();
 
 
@@ -115,18 +115,23 @@ Level.prototype = {
 
 		for (var i = 0; i < this.coinGroup.length; i++) {
 			var coin = this.coinGroup.getAt(i).body;
-			console.log("coingroup things:");
 			coin.setCollisionGroup(this.mapCollisionGroup);
 			// ALMOST DONE! COLLISION WORKS WITH .collides([group1, group2], callbackFunction); Though we dont want the collision part of
-			// it so im trying this right now.
+			// it so im trying this right now...
 			coin.createGroupCallback(this.mapCollisionGroup, function() {console.log("collision!");}, this );
 			coin.createGroupCallback(this.playerCollisionGroup, function() {console.log("collision!");}, this );
-
 		}
 
 		//  Add animations to all of the coin sprites
 		this.coinGroup.callAll('animations.add', 'animations', 'spin', [0, 1, 2, 3, 4, 5], 10, true);
 		this.coinGroup.callAll('animations.play', 'animations', 'spin');
+		//this.coinGroup.callAll('body.setCollisionGroup', this, this.mapCollisionGroup);
+		//this.coinGroup.callAll('body.collides', this, this.playerCollisionGroup);
+
+		game.physics.p2.setPostBroadphaseCallback(checkCollision, this);
+		//this.player.sprite.body.collides(this.coinCollisionGroup, function() {console.log("coin");}, this);
+		//ship.body.collides(this.coinCollisionGroup);
+
 
 	},
 
@@ -199,5 +204,33 @@ Level.prototype = {
 			//body.setCollision(this.playerCollisionGroup);
 		}, this);
 	}
-
 };
+
+function checkCollision(body1, body2) {
+
+	//  To explain - the post broadphase event has collected together all potential collision pairs in the world
+	//  It doesn't mean they WILL collide, just that they might do.
+
+	//  This callback is sent each collision pair of bodies. It's up to you how you compare them.
+	//  If you return true then the pair will carry on into the narrow phase, potentially colliding.
+	//  If you return false they will be removed from the narrow phase check all together.
+
+	//  In this simple example if one of the bodies is our space ship,
+	//  and the other body is the green pepper sprite (frame ID 4) then we DON'T allow the collision to happen.
+	//  Usually you would use a collision mask for something this simple, but it demonstates use.
+
+	// only player vs world can happen, so both cant be null.
+	if (body1.sprite != null && body2.sprite != null) {
+		if ((body1.sprite.name === 'player' && body2.sprite.name === 'coin' ) || (body2.sprite.name === 'player' && body1.sprite.name === 'coin')) {
+			this.player.collectCoin();
+			if (body2.sprite.name === 'coin') {
+				body2.sprite.kill();
+			} else {
+				body1.sprite.kill();
+			}
+			return false;
+		}
+	}
+	return true;
+
+}

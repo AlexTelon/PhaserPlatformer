@@ -5,7 +5,7 @@ Player = function(game) {
 	this.game = game;
 	this.sprite= null;
 	this.cursors = null;
-	this.startXPos = 100;
+	this.startXPos = 200;
 	this.startYPos = 200;
 };
 
@@ -18,6 +18,7 @@ Player.prototype = {
 	create: function () {
 
 		this.sprite = game.add.sprite(this.startXPos, this.startYPos, 'dude');
+	//	this.sprite.name = 'player';
 		this.game.physics.p2.enable(this.sprite);
 		this.sprite.body.fixedRotation = true;
 		this.sprite.body.gravity.y = 500;
