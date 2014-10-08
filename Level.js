@@ -18,6 +18,9 @@ Level.prototype = {
 		game.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
 		game.load.spritesheet('coin', 'assets/sprites/coin.png', 32, 32);
 
+
+		game.load.image('sky', 'assets/skies/sky4.png');
+
 		game.load.audio('coin', 'assets/audio/SoundEffects/p-ping.mp3');
 		game.load.audio('music', 'assets/audio/sd-ingame1.wav');
 
@@ -46,6 +49,8 @@ Level.prototype = {
 		//Setup the different levels
 
 		this.game.stage.backgroundColor = '#2d2d2d';
+		this.sky = game.add.tileSprite(0, 0, 800, 600, 'sky');
+		this.sky.fixedToCamera = true;
 		this.map = this.game.add.tilemap('map');
 
 		this.map.addTilesetImage('ground_1x1');
@@ -101,6 +106,10 @@ Level.prototype = {
 		this.coinSound = this.game.add.audio('coin');
 		this.music = this.game.add.audio('music');
 		this.music.play('',0,0.5,true);
+
+		this.playerGroup = game.add.group();
+		this.playerGroup.add(this.player.sprite);
+
 	},
 
 	flipMap: function() {
