@@ -90,6 +90,7 @@ Level.prototype = {
 		for (var i = 0; i < this.coinGroup.length; i++) {
 			var coin = this.coinGroup.getAt(i).body;
 			coin.setCollisionGroup(this.mapCollisionGroup);
+			coin.static = true;
 		}
 
 		//  Add animations to all of the coin sprites
