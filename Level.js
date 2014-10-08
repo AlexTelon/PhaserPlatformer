@@ -18,6 +18,9 @@ Level.prototype = {
 		game.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
 		game.load.spritesheet('coin', 'assets/sprites/coin.png', 32, 32);
 
+		game.load.audio('coin', 'assets/audio/SoundEffects/p-ping.mp3');
+		game.load.audio('music', 'assets/audio/sd-ingame1.wav');
+
 		game.physics.startSystem(Phaser.Physics.P2JS);
 	},
 
@@ -48,10 +51,10 @@ Level.prototype = {
 		this.map.addTilesetImage('ground_1x1');
 		this.map.addTilesetImage('coin');
 
-		this.layer[1] = this.map.createLayer('level3UD');
+		this.layer[1] = this.map.createLayer('level2UD');
 		this.layer[1].resizeWorld();
 
-		this.layer[0] = this.map.createLayer('level3');
+		this.layer[0] = this.map.createLayer('level2');
 		this.layer[0].resizeWorld();
 
 		this.layer[0].alpha = 1;
@@ -81,7 +84,7 @@ Level.prototype = {
 		this.coinGroup.physicsBodyType = Phaser.Physics.P2JS;
 
 		// Använd nedanstående grej för att skapa coin sprites och gör sedan normala collisioner med dem! :)
-		this.map.createFromObjects('level3OBJ', 26, 'coin', 0, true, false, this.coinGroup);
+		this.map.createFromObjects('level2OBJ', 26, 'coin', 0, true, false, this.coinGroup);
 
 		for (var i = 0; i < this.coinGroup.length; i++) {
 			var coin = this.coinGroup.getAt(i).body;
@@ -95,6 +98,9 @@ Level.prototype = {
 
 		game.physics.p2.setPostBroadphaseCallback(checkCollision, this);
 
+		this.coinSound = this.game.add.audio('coin');
+		this.music = this.game.add.audio('music');
+		this.music.play('',0,0.5,true);
 	},
 
 	flipMap: function() {
@@ -162,6 +168,8 @@ function checkCollision(body1, body2) {
 	if (body1.sprite != null && body2.sprite != null) {
 		if ((body1.sprite.name === 'player' && body2.sprite.name === 'coin' ) || (body2.sprite.name === 'player' && body1.sprite.name === 'coin')) {
 			this.player.collectCoin();
+			this.coinSound.play();
+
 			if (body2.sprite.name === 'coin') {
 				body2.sprite.kill();
 			} else {
