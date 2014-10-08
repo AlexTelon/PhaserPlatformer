@@ -26,7 +26,7 @@ Player.prototype = {
 		this.sprite.checkWorldBounds = true;
 
 		// The player dies if it hits the edges of the map.
-		this.sprite.events.onOutOfBounds.add(this.handleEventualDeath, this);
+	//	this.sprite.events.onOutOfBounds.add(this.handleEventualDeath, this);
 
 		this.sprite.animations.add('left', [0, 1, 2, 3], 10, true);
 		this.sprite.animations.add('turn', [4], 20, true);
@@ -47,7 +47,9 @@ Player.prototype = {
 	},
 
 	update: function() {
-		// nothing to do now that keyboard handling is in keys.js instead.
+		if(this.sprite.y >= this.game.world.height) {
+			this.handleEventualDeath();
+		}
 	},
 
 	setStartPos: function(x,y) {

@@ -14,13 +14,9 @@ Level = function(game, player) {
 Level.prototype = {
 
 	preload: function() {
-		game.load.tilemap('map', 'levels2.json', null, Phaser.Tilemap.TILED_JSON);
+		game.load.tilemap('map', 'levels.json', null, Phaser.Tilemap.TILED_JSON);
 		game.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
 		game.load.spritesheet('coin', 'assets/sprites/coin.png', 32, 32);
-
-		game.load.image('stars', 'assets/misc/starfield.jpg');
-		game.load.spritesheet('ship', 'assets/sprites/humstar.png', 32, 32);
-		game.load.image('sweet', 'assets/sprites/spinObj_06.png');
 
 		game.physics.startSystem(Phaser.Physics.P2JS);
 	},
@@ -52,10 +48,10 @@ Level.prototype = {
 		this.map.addTilesetImage('ground_1x1');
 		this.map.addTilesetImage('coin');
 
-		this.layer[1] = this.map.createLayer('level2UD');
+		this.layer[1] = this.map.createLayer('level3UD');
 		this.layer[1].resizeWorld();
 
-		this.layer[0] = this.map.createLayer('level2');
+		this.layer[0] = this.map.createLayer('level3');
 		this.layer[0].resizeWorld();
 
 		this.layer[0].alpha = 1;
@@ -85,7 +81,7 @@ Level.prototype = {
 		this.coinGroup.physicsBodyType = Phaser.Physics.P2JS;
 
 		// Använd nedanstående grej för att skapa coin sprites och gör sedan normala collisioner med dem! :)
-		this.map.createFromObjects('level2OBJ', 26, 'coin', 0, true, false, this.coinGroup);
+		this.map.createFromObjects('level3OBJ', 26, 'coin', 0, true, false, this.coinGroup);
 
 		for (var i = 0; i < this.coinGroup.length; i++) {
 			var coin = this.coinGroup.getAt(i).body;
@@ -145,8 +141,6 @@ Level.prototype = {
 		this.mapObjects.forEach(function(body) {
 			body.setCollisionGroup(this.mapCollisionGroup);
 			body.collides([this.mapCollisionGroup, this.playerCollisionGroup]);
-			//	this.mapGroup.addBody(body);
-			//body.setCollision(this.playerCollisionGroup);
 		}, this);
 	}
 };
