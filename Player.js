@@ -68,7 +68,7 @@ Player.prototype = {
 		this.sprite.reset(this.startXPos, this.startYPos);
 		this.deathCounter += 1;
 		console.log(this.deathCounter);
-		this.deathSound.play();
+		this.deathSound.play('',0,0.2);
 		hud.scoreText.text = 'Score: ' + hud.score + ' Deaths: ' + this.deathCounter;
 	},
 

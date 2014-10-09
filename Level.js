@@ -16,10 +16,10 @@ Level = function(game, player) {
 Level.prototype = {
 
 	preload: function() {
-		game.load.tilemap('map', 'levels2.json', null, Phaser.Tilemap.TILED_JSON);
+		game.load.tilemap('map', 'levels.json', null, Phaser.Tilemap.TILED_JSON);
 		game.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
+		game.load.image('platformer_tiles_2x', 'assets/tilemaps/tiles/platformer_tiles_2x.png');
 		game.load.spritesheet('coin', 'assets/sprites/coin.png', 32, 32);
-
 
 		game.load.image('sky', 'assets/skies/sky4.png');
 
@@ -36,7 +36,6 @@ Level.prototype = {
 		this.game.physics.p2.restitution = 0;
 		this.game.physics.p2.gravity.y = 500;
 
-
 		//  Create our collision groups. One for the player, one for the pandas
 		this.playerCollisionGroup = game.physics.p2.createCollisionGroup();
 
@@ -46,21 +45,23 @@ Level.prototype = {
 
 		this.player.sprite.body.setCollisionGroup(this.playerCollisionGroup);
 
+		this.sky = game.add.tileSprite(0, 0, 800, 600, 'sky');
+		this.sky.fixedToCamera = true;
+
 		this.coinGroup = this.game.add.group();
 		this.coinGroup.enableBody = true;
 		this.coinGroup.physicsBodyType = Phaser.Physics.P2JS;
 
+		// here we will put the player position sprite from the map
+		this.playerPositionGroup = this.game.add.group();
 
-		//	this.sky = game.add.tileSprite(0, 0, 800, 600, 'sky');
-		//	this.sky.fixedToCamera = true;
 		this.map = this.game.add.tilemap('map');
 		this.map.addTilesetImage('ground_1x1');
+		this.map.addTilesetImage('platformer_tiles_2x');
 		this.map.addTilesetImage('coin');
 
 		//Setup the different levels
 		this.setupLevel();
-
-
 
 		game.physics.p2.setPostBroadphaseCallback(checkCollision, this);
 
@@ -94,7 +95,7 @@ Level.prototype = {
 		}
 
 		this.map = this.game.add.tilemap('map');
-		//this.map.addTilesetImage('ground_1x1');
+		this.map.addTilesetImage('ground_1x1');
 		if(this.flipSwitch) {
 			this.currentLayer = this.layer[0];
 			this.layer[0].alpha = 1;
@@ -110,7 +111,7 @@ Level.prototype = {
 
 		//  Set the tiles for collision.
 		//  Do this BEFORE generating the p2 bodies below.
-		this.map.setCollisionBetween(1, 12, true, this.currentLayer, true);
+		this.map.setCollisionBetween(1, 144, true, this.currentLayer, true);
 
 		//  Convert the tilemap layer into bodies. Only tiles that collide (see above) are created.
 		//  This call returns an array of body objects which you can perform addition actions on if
@@ -141,27 +142,28 @@ Level.prototype = {
 
 		this.map.destroy();
 		this.map = this.game.add.tilemap('map');
+		this.map.addTilesetImage('platformer_tiles_2x');
 		this.map.addTilesetImage('ground_1x1');
 		this.map.addTilesetImage('coin');
 
-		switch(this.currentLevel){
-			// Använd nedanstående grej för att skapa coin sprites och gör sedan normala collisioner med dem! :)
-			case 1:
-				this.layer[0] = this.map.createLayer('level1');
-				this.layer[1] = this.map.createLayer('level1UD');
-				this.map.createFromObjects('level1OBJ', 26, 'coin', 0, true, false, this.coinGroup);
-				break;
-			case 2:
-				this.layer[0] = this.map.createLayer('level2');
-				this.layer[1] = this.map.createLayer('level2UD');
-				this.map.createFromObjects('level2OBJ', 26, 'coin', 0, true, false, this.coinGroup);
-				break;
-			case 3:
-				this.layer[0] = this.map.createLayer('level3');
-				this.layer[1] = this.map.createLayer('level3UD');
-				this.map.createFromObjects('level3OBJ', 26, 'coin', 0, true, false, this.coinGroup);
-				break;
+		var level = 'A' + this.currentLevel.toString();
+		var levelUD = level + 'UD';
+		var levelOBJ = level + 'OBJ';
 
+		this.layer[0] = this.map.createLayer(level);
+		this.layer[1] = this.map.createLayer(levelUD);
+		this.map.createFromObjects(levelOBJ, 26, 'coin', 0, true, false, this.coinGroup);
+		this.map.createFromObjects(levelOBJ, 145, 'coin', 0, true, false, this.playerPositionGroup);
+
+		for (var i = 0; i < this.playerPositionGroup.length; i++) {
+			var sprite = this.playerPositionGroup.getAt(i);
+			if (sprite.name == 'playerPos') {
+				console.log(sprite);
+				this.player.setStartPos(sprite.x, sprite.y);
+				// reset the players position for every new map
+				this.player.sprite.reset(sprite.x, sprite.y);
+				sprite.kill();
+			}
 		}
 
 		this.layer[1].resizeWorld();
@@ -173,7 +175,7 @@ Level.prototype = {
 
 		//  Set the tiles for collision.
 		//  Do this BEFORE generating the p2 bodies below.
-		this.map.setCollisionBetween(1, 12, true, this.currentLayer, true);
+		this.map.setCollisionBetween(1, 144, true, this.currentLayer, true);
 
 		//  Convert the tilemap layer into bodies. Only tiles that collide (see above) are created.
 		//  This call returns an array of body objects which you can perform addition actions on if
@@ -183,6 +185,7 @@ Level.prototype = {
 		this.mapCollisionGroup = this.game.physics.p2.createCollisionGroup();
 
 		this.mapObjects.forEach(function(body) {
+
 			body.setCollisionGroup(this.mapCollisionGroup);
 			body.collides([this.mapCollisionGroup, this.playerCollisionGroup]);
 		}, this);
@@ -191,17 +194,14 @@ Level.prototype = {
 
 		for (var i = 0; i < this.coinGroup.length; i++) {
 			var coin = this.coinGroup.getAt(i).body;
-			coin.setCollisionGroup(this.mapCollisionGroup);
-			coin.static = true;
+				coin.setCollisionGroup(this.mapCollisionGroup);
+				coin.static = true;
 		}
 
 		//  Add animations to all of the coin sprites
 		this.coinGroup.callAll('animations.add', 'animations', 'spin', [0, 1, 2, 3, 4, 5], 10, true);
 		this.coinGroup.callAll('animations.play', 'animations', 'spin');
-
 	}
-
-
 };
 
 function checkCollision(body1, body2) {
