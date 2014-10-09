@@ -9,9 +9,10 @@ Level = function(game, player) {
 	this.flipSwitch = false;
 	this.collectedCoins = 0;
 	this.coinsToCollect = 2;
-	this.currentLevel = 1;
+	this.currentLevel = 2;
 	this.changeOfLevel = false;
 	this.mapObjects = null;
+	this.demoTexts = [];
 };
 
 Level.prototype = {
@@ -46,8 +47,8 @@ Level.prototype = {
 
 		this.player.sprite.body.setCollisionGroup(this.playerCollisionGroup);
 
-		this.sky = game.add.tileSprite(0, 0, 800, 600, 'sky');
-		this.sky.fixedToCamera = true;
+		//	this.sky = game.add.tileSprite(0, 0, 800, 600, 'sky');
+		//	this.sky.fixedToCamera = true;
 
 		this.coinGroup = this.game.add.group();
 		this.coinGroup.enableBody = true;
@@ -83,6 +84,17 @@ Level.prototype = {
 		if(this.changeOfLevel) {
 			this.changeOfLevel = false;
 			this.setupLevel();
+		}
+
+		// help text for the first levels only
+		if (this.currentLevel == 1) {
+			if(this.player.sprite.x > 800)
+				writeJumpHelpText(this);
+
+			if (this.player.sprite.x > 1000)
+				writeDeathHelpText(this);
+		} else if (this.currentLevel == 2) {
+			writeLevel2HelpText(this);
 		}
 	},
 
@@ -123,6 +135,15 @@ Level.prototype = {
 			body.setCollisionGroup(this.mapCollisionGroup);
 			body.collides([this.mapCollisionGroup, this.playerCollisionGroup]);
 		}, this);
+
+		// bit ugly to have this here, need to cleanup this whole file atm..
+		// destroy old helptexts from the first levels
+		if (this.currentLevel == 2) {
+			for (var i = 0; i < this.demoTexts.length; i++) {
+				this.demoTexts[i].destroy();
+			}
+		}
+
 	},
 
 	setupLevel: function() {
@@ -134,7 +155,7 @@ Level.prototype = {
 		}
 
 		console.log(this.layer.length);
-		if(this.layer.length != 0) {
+		if (this.layer.length != 0) {
 			this.layer[0].renderable = false;
 			this.layer[1].renderable = false;
 			this.layer[0].visible = false;
@@ -185,7 +206,7 @@ Level.prototype = {
 
 		this.mapCollisionGroup = this.game.physics.p2.createCollisionGroup();
 
-		this.mapObjects.forEach(function(body) {
+		this.mapObjects.forEach(function (body) {
 
 			body.setCollisionGroup(this.mapCollisionGroup);
 			body.collides([this.mapCollisionGroup, this.playerCollisionGroup]);
@@ -195,8 +216,8 @@ Level.prototype = {
 
 		for (var i = 0; i < this.coinGroup.length; i++) {
 			var coin = this.coinGroup.getAt(i).body;
-				coin.setCollisionGroup(this.mapCollisionGroup);
-				coin.static = true;
+			coin.setCollisionGroup(this.mapCollisionGroup);
+			coin.static = true;
 		}
 
 		this.coinsToCollect = this.coinGroup.length;
@@ -204,6 +225,13 @@ Level.prototype = {
 		//  Add animations to all of the coin sprites
 		this.coinGroup.callAll('animations.add', 'animations', 'spin', [0, 1, 2, 3, 4, 5], 10, true);
 		this.coinGroup.callAll('animations.play', 'animations', 'spin');
+
+		// destroy old helptexts from the first levels
+		if (this.currentLevel != 1) {
+			for (var i = 0; i < this.demoTexts.length; i++) {
+				this.demoTexts[i].destroy();
+			}
+		}
 	}
 };
 
@@ -243,3 +271,28 @@ function checkCollision(body1, body2) {
 	return true;
 }
 
+var jumpTextFirst = true;
+var deathTextFirst = true;
+var lvl2HelpTextFirst = true;
+
+function writeJumpHelpText(context) {
+	if (jumpTextFirst) {
+		context.demoTexts[0] = context.game.add.text(700, 100, 'Hold down the jump key during your jump', { fontSize: '16px', fill: '#FFF' });
+		context.demoTexts[1] = context.game.add.text(700, 140, 'and you will jump slightly longer', { fontSize: '16px', fill: '#FFF' });
+		jumpTextFirst = false;
+	}
+}
+
+function writeDeathHelpText(context) {
+	if (deathTextFirst) {
+		context.demoTexts[2] = this.game.add.text(900, 400, 'and dont worry, dying isnt gonna kill you ;)', { fontSize: '16px', fill: '#FFF' });
+		deathTextFirst = false;
+	}
+}
+
+function writeLevel2HelpText(context) {
+	if (lvl2HelpTextFirst) {
+		context.demoTexts[0] = this.game.add.text(100, 250, 'Tip: Test the A-key!', { fontSize: '16px', fill: '#FFF' });
+		lvl2HelpTextFirst = false;
+	}
+}
