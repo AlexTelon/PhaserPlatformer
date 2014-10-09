@@ -87,11 +87,6 @@ Level.prototype = {
 	},
 
 	setUpMapSwitch: function() {
-		this.mapObjects.forEach(function(obj) {
-			// TODO this might be really inefficent..
-			// And I thinkg setCollisionBetween(1,12,false...) should do this instead.
-			obj.clearShapes();
-		});
 
 		if (this.mapObjects !== null) {
 			this.mapObjects.forEach(function (body) {
@@ -101,10 +96,8 @@ Level.prototype = {
 			});
 		}
 
-
-		// TODO this probably is the bottleneck, flipping the map makes the game REALLY slow after a while.
 		this.map = this.game.add.tilemap('map');
-		this.map.addTilesetImage('ground_1x1');
+		//this.map.addTilesetImage('ground_1x1');
 		if(this.flipSwitch) {
 			this.currentLayer = this.layer[0];
 			this.layer[0].alpha = 1;
@@ -137,7 +130,6 @@ Level.prototype = {
 
 		if (this.mapObjects !== null) {
 			this.mapObjects.forEach(function (body) {
-				console.log(body);
 				body.remove;
 				body.removeFromWorld();
 			});

@@ -10,7 +10,7 @@
              "collides":"true"
             },
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":50,
          "x":0,
          "y":0
@@ -25,7 +25,7 @@
              "collides":"true"
             },
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":50,
          "x":0,
          "y":0
@@ -55,7 +55,7 @@
              "collides":"true"
             },
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":50,
          "x":0,
          "y":0
@@ -70,7 +70,7 @@
              "collides":"true"
             },
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":50,
          "x":0,
          "y":0
@@ -157,7 +157,7 @@
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":true,
+         "visible":false,
          "width":50,
          "x":0,
          "y":0
@@ -221,7 +221,7 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":1457.02469684641,
+                 "x":1458.02469684641,
                  "y":536.024658784224
                 }, 
                 {
@@ -238,10 +238,55 @@
                  "width":0,
                  "x":1458,
                  "y":68
+                }, 
+                {
+                 "gid":26,
+                 "height":0,
+                 "name":"coin",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":-0.088371,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":271,
+                 "y":351
+                }, 
+                {
+                 "gid":26,
+                 "height":0,
+                 "name":"coin",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":-0.088371,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":208,
+                 "y":401
+                }, 
+                {
+                 "gid":26,
+                 "height":0,
+                 "name":"coin",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":-0.088371,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":284,
+                 "y":195
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "width":50,
          "x":0,
          "y":0
