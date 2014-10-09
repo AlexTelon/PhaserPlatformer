@@ -7,6 +7,9 @@ var keys = null;
 
 function preload()
 {
+	// destory any previous chache so we can load new maps for example
+	game.cache.destroy();
+
 	player = new Player(game);
 	player.preload();
 
