@@ -1,35 +1,28 @@
+var dudegame = dudegame || {};
 
-
-Player = function(game) {
-
-	this.game = game;
-	this.sprite= null;
-	this.cursors = null;
-	this.startXPos = 100;
-	this.startYPos = 200;
-	this.deathCounter = 0;
+dudegame.Player = function() {
+	return this;
 };
 
-Player.prototype = {
+dudegame.Player.prototype = {
 
-	preload: function () {
-		this.game.load.spritesheet('dude', 'assets/games/starstruck/dude.png', 32, 48);
-
-
-		game.load.audio('death', 'assets/audio/SoundEffects/numkey_wrong.wav');
+	init: function (game) {
+		this.game = game;
+		this.sprite= null;
+		this.cursors = null;
+		this.startXPos = 100;
+		this.startYPos = 200;
+		this.deathCounter = 0;
 	},
 
 	create: function () {
 
 		this.sprite = game.add.sprite(this.startXPos, this.startYPos, 'dude');
-		this.sprite.name = 'player';
+		this.sprite.name = 'playerDerpa';
 		this.game.physics.p2.enable(this.sprite);
 		this.sprite.body.fixedRotation = true;
 		this.sprite.body.gravity.y = 500;
 		this.sprite.checkWorldBounds = true;
-
-		// The player dies if it hits the edges of the map.
-	//	this.sprite.events.onOutOfBounds.add(this.handleEventualDeath, this);
 
 		this.sprite.animations.add('left', [0, 1, 2, 3], 10, true);
 		this.sprite.animations.add('turn', [4], 20, true);
@@ -39,8 +32,6 @@ Player.prototype = {
 		this.game.camera.follow(this.sprite, Phaser.Camera.FOLLOW_LOCKON);
 
 		this.deathSound = this.game.add.audio('death');
-
-		return this;
 	},
 
 	collectCoin: function () {
@@ -53,9 +44,6 @@ Player.prototype = {
 	},
 
 	update: function() {
-		if(this.sprite.y >= this.game.world.height) {
-			this.handleEventualDeath();
-		}
 	},
 
 	setStartPos: function(x,y) {

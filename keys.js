@@ -1,28 +1,23 @@
 /**
- OK, this is not optimal maybe since we are creating a log of dependencies from keys to level and player..
+ OK, this is not optimal maybe since we are creating a log of dependencies from keys to player..
  **/
 
-Keys = function(game, level, player) {
-
-	this.game = game;
-	this.level = level;
-	this.player= player;
-
-	// Key thingies
-	this.cursors = null;
-	this.flipWorld = null;
+dudegame.Keys = function() {
+	return this;
 };
 
-Keys.prototype = {
+dudegame.Keys.prototype = {
 
-	create: function (player) {
-		this.player = player;
+	init: function(game, player) {
+
+		this.game = game;
+		this.player= player;
+
+		// Key thingies
+		this.cursors = null;
+		this.flipWorld = null;
 
 		this.cursors = this.game.input.keyboard.createCursorKeys();
-
-		// Keys
-		this.flipWorld = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
-		this.flipWorld.onDown.add(this.level.flipMap, this.level);
 	},
 
 	update: function() {
@@ -32,7 +27,7 @@ Keys.prototype = {
 		if(this.cursors.left.isDown)
 		{
 			this.player.body.moveLeft(250);
-
+			console.log("left");
 			this.player.animations.play('left');
 		}
 		else if(this.cursors.right.isDown)
