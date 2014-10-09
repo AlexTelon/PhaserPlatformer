@@ -60,9 +60,7 @@ Level.prototype = {
 		//Setup the different levels
 		this.setupLevel();
 
-		//  Add animations to all of the coin sprites
-		this.coinGroup.callAll('animations.add', 'animations', 'spin', [0, 1, 2, 3, 4, 5], 10, true);
-		this.coinGroup.callAll('animations.play', 'animations', 'spin');
+
 
 		game.physics.p2.setPostBroadphaseCallback(checkCollision, this);
 
@@ -90,7 +88,6 @@ Level.prototype = {
 
 		if (this.mapObjects !== null) {
 			this.mapObjects.forEach(function (body) {
-				console.log(body);
 				body.remove;
 				body.removeFromWorld();
 			});
@@ -130,18 +127,17 @@ Level.prototype = {
 
 		if (this.mapObjects !== null) {
 			this.mapObjects.forEach(function (body) {
-				body.remove;
 				body.removeFromWorld();
 			});
 		}
 
 		console.log(this.layer.length);
 		if(this.layer.length != 0) {
-			this.layer[0].alpha = 0;
-			this.layer[1].alpha = 0;
+			this.layer[0].renderable = false;
+			this.layer[1].renderable = false;
+			this.layer[0].visible = false;
+			this.layer[1].visible = false;
 		}
-
-		console.log(this.mapObjects);
 
 		this.map.destroy();
 		this.map = this.game.add.tilemap('map');
@@ -199,6 +195,10 @@ Level.prototype = {
 			coin.static = true;
 		}
 
+		//  Add animations to all of the coin sprites
+		this.coinGroup.callAll('animations.add', 'animations', 'spin', [0, 1, 2, 3, 4, 5], 10, true);
+		this.coinGroup.callAll('animations.play', 'animations', 'spin');
+
 	}
 
 
@@ -223,7 +223,6 @@ function checkCollision(body1, body2) {
 			this.player.collectCoin();
 			this.coinSound.play();
 			this.collectedCoins++;
-			console.log(this.collectedCoins);
 			if(this.collectedCoins == 2) {
 				this.collectedCoins = 0;
 				this.currentLevel++;
