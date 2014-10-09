@@ -8,6 +8,7 @@ Level = function(game, player) {
 	this.currentLayer = null;
 	this.flipSwitch = false;
 	this.collectedCoins = 0;
+	this.coinsToCollect = 2;
 	this.currentLevel = 1;
 	this.changeOfLevel = false;
 	this.mapObjects = null;
@@ -198,6 +199,8 @@ Level.prototype = {
 				coin.static = true;
 		}
 
+		this.coinsToCollect = this.coinGroup.length;
+
 		//  Add animations to all of the coin sprites
 		this.coinGroup.callAll('animations.add', 'animations', 'spin', [0, 1, 2, 3, 4, 5], 10, true);
 		this.coinGroup.callAll('animations.play', 'animations', 'spin');
@@ -223,7 +226,7 @@ function checkCollision(body1, body2) {
 			this.player.collectCoin();
 			this.coinSound.play();
 			this.collectedCoins++;
-			if(this.collectedCoins == 2) {
+			if(this.collectedCoins == this.coinsToCollect) {
 				this.collectedCoins = 0;
 				this.currentLevel++;
 				this.changeOfLevel = true;

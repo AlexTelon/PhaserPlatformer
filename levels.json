@@ -10,7 +10,7 @@
              "collides":"true"
             },
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":50,
          "x":0,
          "y":0
@@ -25,7 +25,7 @@
              "collides":"true"
             },
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":50,
          "x":0,
          "y":0
@@ -40,7 +40,7 @@
              "collides":"true"
             },
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":50,
          "x":0,
          "y":0
@@ -55,7 +55,7 @@
              "collides":"true"
             },
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":50,
          "x":0,
          "y":0
@@ -266,8 +266,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":53,
-                 "y":505
+                 "x":60,
+                 "y":508
                 }, 
                 {
                  "gid":26,
@@ -281,12 +281,27 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":443,
-                 "y":323
+                 "x":117,
+                 "y":505
+                }, 
+                {
+                 "gid":145,
+                 "height":0,
+                 "name":"playerPos",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":59,
+                 "y":329
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "width":50,
          "x":0,
          "y":0
@@ -353,8 +368,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":64,
-                 "y":488
+                 "x":43,
+                 "y":460
                 }],
          "opacity":1,
          "type":"objectgroup",
