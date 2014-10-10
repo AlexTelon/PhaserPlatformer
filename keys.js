@@ -31,13 +31,13 @@ Keys.prototype = {
 
 		if(this.cursors.left.isDown)
 		{
-			this.player.body.moveLeft(250);
+			this.player.body.moveLeft(300);
 
 			this.player.animations.play('left');
 		}
 		else if(this.cursors.right.isDown)
 		{
-			this.player.body.moveRight(250);
+			this.player.body.moveRight(300);
 
 			this.player.animations.play('right');
 		}

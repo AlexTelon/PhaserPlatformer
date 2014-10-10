@@ -49,7 +49,7 @@ Player.prototype = {
 
 		//  Add and update the score
 		hud.score += 10;
-		hud.scoreText.text = 'Score: ' + hud.score + ' Deaths: ' + this.deathCounter;
+		hud.scoreText.text = 'Score: ' + hud.score;
 	},
 
 	update: function() {
@@ -69,7 +69,7 @@ Player.prototype = {
 		this.deathCounter += 1;
 		console.log(this.deathCounter);
 		this.deathSound.play('',0,0.2);
-		hud.scoreText.text = 'Score: ' + hud.score + ' Deaths: ' + this.deathCounter;
+		hud.scoreText.text = 'Score: ' + hud.score;
 	},
 
 	handleEventualDeath: function() {

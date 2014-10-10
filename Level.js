@@ -9,7 +9,7 @@ Level = function(game, player) {
 	this.flipSwitch = false;
 	this.collectedCoins = 0;
 	this.coinsToCollect = 2;
-	this.currentLevel = 1;
+	this.currentLevel = 5;
 	this.changeOfLevel = false;
 	this.mapObjects = null;
 	this.demoTexts = [];
@@ -209,7 +209,6 @@ Level.prototype = {
 		this.mapCollisionGroup = this.game.physics.p2.createCollisionGroup();
 
 		this.mapObjects.forEach(function (body) {
-
 			body.setCollisionGroup(this.mapCollisionGroup);
 			body.collides([this.mapCollisionGroup, this.playerCollisionGroup]);
 		}, this);
@@ -237,6 +236,7 @@ Level.prototype = {
 	}
 };
 
+// checks collisions, if there is player-coin collision collect the coin
 function checkCollision(body1, body2) {
 
 	//  To explain - the post broadphase event has collected together all potential collision pairs in the world
