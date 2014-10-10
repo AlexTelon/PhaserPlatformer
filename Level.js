@@ -154,6 +154,8 @@ Level.prototype = {
 			});
 		}
 
+		this.coinGroup.removeAll(true);
+
 		console.log(this.layer.length);
 		if (this.layer.length != 0) {
 			this.layer[0].renderable = false;
@@ -254,7 +256,8 @@ function checkCollision(body1, body2) {
 			this.player.collectCoin();
 			this.coinSound.play();
 			this.collectedCoins++;
-			if(this.collectedCoins == this.coinsToCollect) {
+			console.log(this.collectedCoins + " of " + this.coinsToCollect);
+			if(this.collectedCoins >= this.coinsToCollect) {
 				this.collectedCoins = 0;
 				this.currentLevel++;
 				this.changeOfLevel = true;
