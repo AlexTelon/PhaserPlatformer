@@ -36,7 +36,7 @@ Player.prototype = {
 		this.sprite.animations.add('right', [5, 6, 7, 8], 10, true);
 
 		this.cursors = this.game.input.keyboard.createCursorKeys();
-		this.game.camera.follow(this.sprite, Phaser.Camera.FOLLOW_LOCKON);
+		this.game.camera.follow(this.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
 
 		this.deathSound = this.game.add.audio('death');
 

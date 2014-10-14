@@ -58,12 +58,12 @@ Keys.prototype = {
 		//  Allow the player to jump if they are touching the ground.
 		if ((this.jump.isDown || this.cursors.up.isDown) && checkIfCanJump(this.player))
 		{
-			this.player.body.moveUp(300);
+			this.player.body.moveUp(305);
 		}
 
 		// gives the user more options to steer the player in the air
 		this.player.body.data.gravityScale = 1;
-		if (this.cursors.up.isDown) {
+		if (this.cursors.up.isDown || this.jump.isDown) {
 			this.player.body.data.gravityScale = 0.8;
 		}
 
