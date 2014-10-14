@@ -1,4 +1,4 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, '', { preload: preload, create: create, update: update, render:render });
 
 var player = null;
 var level = null;
@@ -35,4 +35,10 @@ function update()
 	level.update();
 	player.update();
 	keys.update();
+}
+
+function render() {
+//	game.debug.body(player.sprite);
+	game.debug.spriteInfo(player.sprite, 32, 32);
+
 }

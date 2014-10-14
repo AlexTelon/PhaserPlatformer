@@ -7,7 +7,6 @@ Keys = function(game, level, player) {
 	this.game = game;
 	this.level = level;
 	this.player= player;
-
 	// Key thingies
 	this.cursors = null;
 	this.flipWorld = null;
@@ -23,6 +22,13 @@ Keys.prototype = {
 		// Keys
 		this.flipWorld = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
 		this.flipWorld.onDown.add(this.level.flipMap, this.level);
+		this.jump = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+		this.crouch = this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+		this.crouch.onUp.add(this.crouchReleased, this);
+		this.crouch.onDown.add(this.crouchDown, this);
+
+
 	},
 
 	update: function() {
@@ -40,15 +46,17 @@ Keys.prototype = {
 			this.player.body.moveRight(300);
 
 			this.player.animations.play('right');
-		}
-		else
+		} else
 		{
 			this.player.animations.stop();
 			this.player.frame = 4;
 		}
 
+		if (this.cursors.down.isDown) {
+
+		}
 		//  Allow the player to jump if they are touching the ground.
-		if (this.cursors.up.isDown && checkIfCanJump(this.player))
+		if ((this.jump.isDown || this.cursors.up.isDown) && checkIfCanJump(this.player))
 		{
 			this.player.body.moveUp(300);
 		}
@@ -57,10 +65,20 @@ Keys.prototype = {
 		this.player.body.data.gravityScale = 1;
 		if (this.cursors.up.isDown) {
 			this.player.body.data.gravityScale = 0.8;
-		} else if (this.cursors.down.isDown) {
-			this.player.body.data.gravityScale = 1.5;
 		}
 
+	},
+
+	crouchReleased: function() {
+		this.player.scale.y = 1;
+		this.player.body.setRectangle(32,48,0,0,0);
+		this.player.body.setCollisionGroup(this.level.playerCollisionGroup);
+	},
+
+	crouchDown: function() {
+		this.player.scale.y = 0.5;
+		this.player.body.setRectangle(32, 32, 0, 0, 0);
+		this.player.body.setCollisionGroup(this.level.playerCollisionGroup);
 	}
 };
 

@@ -9,7 +9,7 @@ Level = function(game, player) {
 	this.flipSwitch = false;
 	this.collectedCoins = 0;
 	this.coinsToCollect = 2;
-	this.currentLevel = 5;
+	this.currentLevel = 1;
 	this.changeOfLevel = false;
 	this.mapObjects = null;
 	this.demoTexts = [];
@@ -28,7 +28,7 @@ Level.prototype = {
 		game.load.audio('coin', 'assets/audio/SoundEffects/p-ping.mp3');
 		game.load.audio('music', 'assets/audio/sd-ingame1.wav');
 
-		game.physics.startSystem(Phaser.Physics.P2JS);
+		game.physics.startSystem(Phaser.Physics.P2JS, true);
 	},
 
 	create: function() {
@@ -254,7 +254,7 @@ function checkCollision(body1, body2) {
 	if (body1.sprite != null && body2.sprite != null) {
 		if ((body1.sprite.name === 'player' && body2.sprite.name === 'coin' ) || (body2.sprite.name === 'player' && body1.sprite.name === 'coin')) {
 			this.player.collectCoin();
-			this.coinSound.play();
+			this.coinSound.play('',0,0.2);
 			this.collectedCoins++;
 			console.log(this.collectedCoins + " of " + this.coinsToCollect);
 			if(this.collectedCoins >= this.coinsToCollect) {
@@ -288,7 +288,7 @@ function writeJumpHelpText(context) {
 
 function writeDeathHelpText(context) {
 	if (deathTextFirst) {
-		context.demoTexts[2] = this.game.add.text(900, 400, 'and dont worry, dying isnt gonna kill you ;)', { fontSize: '16px', fill: '#FFF' });
+//		context.demoTexts[2] = this.game.add.text(900, 400, 'and dont worry, dying isnt gonna kill you ;)', { fontSize: '16px', fill: '#FFF' });
 		deathTextFirst = false;
 	}
 }
