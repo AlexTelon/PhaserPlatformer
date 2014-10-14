@@ -48,8 +48,8 @@ Player.prototype = {
 		// are to be made this should be moved there to reduce coupling between "classes"
 
 		//  Add and update the score
-		hud.score += 10;
-		hud.scoreText.text = 'Score: ' + hud.score;
+	//	hud.score += 10;
+	//	hud.scoreText.text = 'Score: ' + hud.score;
 	},
 
 	update: function() {
@@ -69,7 +69,7 @@ Player.prototype = {
 		this.deathCounter += 1;
 		console.log(this.deathCounter);
 		this.deathSound.play('',0,0.1);
-		hud.scoreText.text = 'Score: ' + hud.score;
+	//	hud.scoreText.text = 'Score: ' + hud.score;
 	},
 
 	handleEventualDeath: function() {

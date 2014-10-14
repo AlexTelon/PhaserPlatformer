@@ -9,7 +9,7 @@ Level = function(game, player) {
 	this.flipSwitch = false;
 	this.collectedCoins = 0;
 	this.coinsToCollect = 2;
-	this.currentLevel = 1;
+	this.currentLevel = 3;
 	this.changeOfLevel = false;
 	this.mapObjects = null;
 	this.demoTexts = [];
@@ -69,7 +69,7 @@ Level.prototype = {
 
 		this.coinSound = this.game.add.audio('coin');
 		this.music = this.game.add.audio('music');
-		this.music.play('',0,0.0,true);
+		this.music.play('',0,0.1,true);
 
 		this.playerGroup = game.add.group();
 		this.playerGroup.add(this.player.sprite);
@@ -88,7 +88,7 @@ Level.prototype = {
 
 		// help text for the first levels only
 		if (this.currentLevel == 1) {
-			if(this.player.sprite.x > 800)
+			if(this.player.sprite.x > 800 && this.player.sprite.y < 250)
 				writeJumpHelpText(this);
 
 			if (this.player.sprite.x > 1000)
