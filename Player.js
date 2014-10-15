@@ -13,9 +13,9 @@ Player = function(game) {
 Player.prototype = {
 
 	preload: function () {
-		this.game.load.spritesheet('dude', 'assets/games/starstruck/dude.png', 32, 48);
+		this.game.load.spritesheet('dude', 'assets/dudeFly.png', 32, 48);
 
-		game.load.audio('death', 'assets/audio/SoundEffects/numkey_wrong.wav');
+		game.load.audio('death', 'assets/audio/numkey_wrong.wav');
 	},
 
 	create: function () {
@@ -31,9 +31,11 @@ Player.prototype = {
 		// The player dies if it hits the edges of the map.
 		//	this.sprite.events.onOutOfBounds.add(this.handleEventualDeath, this);
 
-		this.sprite.animations.add('left', [0, 1, 2, 3], 10, true);
+		this.sprite.animations.add('left', [0, 1, 0, 3], 10, true);
 		this.sprite.animations.add('turn', [4], 20, true);
-		this.sprite.animations.add('right', [5, 6, 7, 8], 10, true);
+		this.sprite.animations.add('right', [5, 6, 5, 8], 10, true);
+		this.sprite.animations.add('leftFly', [2], 10, true);
+		this.sprite.animations.add('rightFly', [7], 10, true);
 
 		this.cursors = this.game.input.keyboard.createCursorKeys();
 		this.game.camera.follow(this.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
@@ -48,8 +50,8 @@ Player.prototype = {
 		// are to be made this should be moved there to reduce coupling between "classes"
 
 		//  Add and update the score
-	//	hud.score += 10;
-	//	hud.scoreText.text = 'Score: ' + hud.score;
+		//	hud.score += 10;
+		//	hud.scoreText.text = 'Score: ' + hud.score;
 	},
 
 	update: function() {
@@ -69,7 +71,7 @@ Player.prototype = {
 		this.deathCounter += 1;
 		console.log(this.deathCounter);
 		this.deathSound.play('',0,0.1);
-	//	hud.scoreText.text = 'Score: ' + hud.score;
+		//	hud.scoreText.text = 'Score: ' + hud.score;
 	},
 
 	handleEventualDeath: function() {

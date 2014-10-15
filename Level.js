@@ -9,7 +9,7 @@ Level = function(game, player) {
 	this.flipSwitch = false;
 	this.collectedCoins = 0;
 	this.coinsToCollect = 2;
-	this.currentLevel = 3;
+	this.currentLevel = 1;
 	this.changeOfLevel = false;
 	this.mapObjects = null;
 	this.demoTexts = [];
@@ -19,13 +19,13 @@ Level.prototype = {
 
 	preload: function() {
 		game.load.tilemap('map', 'levels.json', null, Phaser.Tilemap.TILED_JSON);
-		game.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
-		game.load.image('platformer_tiles_2x', 'assets/tilemaps/tiles/platformer_tiles_2x.png');
+		game.load.image('ground_1x1', 'assets/tiles/ground_1x1.png');
+		game.load.image('platformer_tiles_2x', 'assets/tiles/platformer_tiles_2x.png');
 		game.load.spritesheet('coin', 'assets/sprites/coin.png', 32, 32);
 
-		game.load.image('sky', 'assets/skies/sky4.png');
+		game.load.image('sky', 'assets/sprites/sky4.png');
 
-		game.load.audio('coin', 'assets/audio/SoundEffects/p-ping.mp3');
+		game.load.audio('coin', 'assets/audio/p-ping.mp3');
 		game.load.audio('music', 'assets/audio/sd-ingame1.wav');
 
 		game.physics.startSystem(Phaser.Physics.P2JS, true);
@@ -47,8 +47,8 @@ Level.prototype = {
 
 		this.player.sprite.body.setCollisionGroup(this.playerCollisionGroup);
 
-		//	this.sky = game.add.tileSprite(0, 0, 800, 600, 'sky');
-		//	this.sky.fixedToCamera = true;
+		this.sky = game.add.tileSprite(0, 0, 800, 600, 'sky');
+		this.sky.fixedToCamera = true;
 
 		this.coinGroup = this.game.add.group();
 		this.coinGroup.enableBody = true;
@@ -69,7 +69,7 @@ Level.prototype = {
 
 		this.coinSound = this.game.add.audio('coin');
 		this.music = this.game.add.audio('music');
-		this.music.play('',0,0.1,true);
+		this.music.play('',0,0,true);
 
 		this.playerGroup = game.add.group();
 		this.playerGroup.add(this.player.sprite);

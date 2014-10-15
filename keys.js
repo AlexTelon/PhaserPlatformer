@@ -34,19 +34,32 @@ Keys.prototype = {
 	update: function() {
 		// TODO keys should maybe only handle keys and let the player move itself?
 		this.player.body.velocity.x = 0;
+		var jumping = false;
+		if (this.jump.isDown || this.cursors.up.isDown) {
+			jumping = true;
+		}
 
 		if(this.cursors.left.isDown)
 		{
 			this.player.body.moveLeft(300);
 
-			this.player.animations.play('left');
+			if (jumping) {
+				this.player.animations.play('leftFly');
+			}
+			else
+				this.player.animations.play('left');
 		}
 		else if(this.cursors.right.isDown)
 		{
 			this.player.body.moveRight(300);
 
-			this.player.animations.play('right');
-		} else
+			if (jumping) {
+				this.player.animations.play('rightFly');
+			}
+			else
+				this.player.animations.play('right');
+		}
+		else
 		{
 			this.player.animations.stop();
 			this.player.frame = 4;
@@ -56,7 +69,7 @@ Keys.prototype = {
 
 		}
 		//  Allow the player to jump if they are touching the ground.
-		if ((this.jump.isDown || this.cursors.up.isDown) && checkIfCanJump(this.player))
+		if (jumping && checkIfCanJump(this.player))
 		{
 			this.player.body.moveUp(305);
 		}
