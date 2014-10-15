@@ -73,7 +73,6 @@ Level.prototype = {
 
 		this.playerGroup = game.add.group();
 		this.playerGroup.add(this.player.sprite);
-
 	},
 
 	flipMap: function() {
@@ -84,6 +83,13 @@ Level.prototype = {
 		if(this.changeOfLevel) {
 			this.changeOfLevel = false;
 			this.setupLevel();
+		}
+
+		// cludge, very similar code in Player right now
+		// restarts the current level and uncollects all coins upon death
+		if(this.player.sprite.y >= this.game.world.height) {
+			this.setupLevel();
+			this.collectedCoins = 0;
 		}
 
 		// help text for the first levels only
@@ -280,8 +286,8 @@ var lvl2HelpTextFirst = true;
 
 function writeJumpHelpText(context) {
 	if (jumpTextFirst) {
-		context.demoTexts[0] = context.game.add.text(700, 100, 'Hold down the jump key during your jump', { fontSize: '16px', fill: '#FFF' });
-		context.demoTexts[1] = context.game.add.text(700, 140, 'and you will jump slightly longer', { fontSize: '16px', fill: '#FFF' });
+		context.demoTexts[0] = context.game.add.text(700, 85, 'Tip: long-press jump', { fontSize: '16px', fill: '#FFF' });
+//		context.demoTexts[1] = context.game.add.text(700, 140, 'and you will jump slightly longer', { fontSize: '16px', fill: '#FFF' });
 		jumpTextFirst = false;
 	}
 }

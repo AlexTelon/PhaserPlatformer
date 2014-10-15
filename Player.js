@@ -56,7 +56,7 @@ Player.prototype = {
 
 	update: function() {
 		if(this.sprite.y >= this.game.world.height) {
-			this.handleEventualDeath();
+			this.dieAndRepeat();
 		}
 	},
 
@@ -72,11 +72,6 @@ Player.prototype = {
 		console.log(this.deathCounter);
 		this.deathSound.play('',0,0.1);
 		//	hud.scoreText.text = 'Score: ' + hud.score;
-	},
-
-	handleEventualDeath: function() {
-		//TODO change so we wont die buy jumping to high, and add animation
-		// Right now only kill directly, TODO add animation later
-		this.dieAndRepeat();
 	}
+
 };
