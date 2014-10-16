@@ -9,7 +9,7 @@ Level = function(game, player) {
 	this.flipSwitch = false;
 	this.collectedCoins = 0;
 	this.coinsToCollect = 2;
-	this.currentLevel = 6;
+	this.currentLevel = 1;
 	this.changeOfLevel = false;
 	this.mapObjects = null;
 	this.demoTexts = [];
@@ -210,7 +210,7 @@ Level.prototype = {
 		//  Convert the tilemap layer into bodies. Only tiles that collide (see above) are created.
 		//  This call returns an array of body objects which you can perform addition actions on if
 		//  required. There is also a parameter to control optimising the map build.
-		this.mapObjects = this.game.physics.p2.convertTilemap(this.map, this.currentLayer);
+		this.mapObjects = this.game.physics.p2.convertTilemap(this.map, this.currentLayer, true, false);
 
 		this.mapCollisionGroup = this.game.physics.p2.createCollisionGroup();
 
@@ -239,12 +239,52 @@ Level.prototype = {
 				this.demoTexts[i].destroy();
 			}
 		}
+		this.player.sprite.body.createGroupCallback(this.mapCollisionGroup, digg, this);
 	}
 };
 
+function digg(player, mapTile, playerShape, mapTileShape) {
+	//console.log("dig, maptile");
+	var x = Math.round(mapTile.x/32);
+	var y = Math.round(mapTile.y/32);
+
+//	console.log(mapTile);
+//	console.log(Math.round(mapTile.x/32));
+//	console.log(Math.round(mapTile.y/32));
+	console.log(this.map.getTile(x,y, this.currentLayer));
+	console.log(mapTile);
+	console.log("------------")
+
+	var tile = this.map.getTile(x,y, this.currentLayer);
+	this.map.putTile(null, x,y, this.currentLayer);
+	//mapTile.destory();
+//tile.alpha = 0;
+//	tile.collides = false;
+//	tile.destroy();
+
+	/*var player = null;
+	var object = null;
+	var BringUpDiggOption = false;
+	if (body1.sprite.name === 'player') {
+		player = body1;
+		object = body2;
+	} else if (body2.sprite.name === 'player') {
+		player = body2;
+		object = body1;
+	}
+	// ok we now have the player.
+	this.mapObjects.forEach(function (body) {
+		// if the other object is part of the map then we can bring up a digg option
+		if(body.equals(object)){
+			body.sprite.alpha = 0.1;
+			BringUpDiggOption = true;
+			console.log("we have player-map collision");
+		}
+	}, this);*/
+}
+
 // checks collisions, if there is player-coin collision collect the coin
 function checkCollision(body1, body2) {
-
 	//  To explain - the post broadphase event has collected together all potential collision pairs in the world
 	//  It doesn't mean they WILL collide, just that they might do.
 
