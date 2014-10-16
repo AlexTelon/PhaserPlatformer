@@ -287,14 +287,13 @@ var lvl2HelpTextFirst = true;
 function writeJumpHelpText(context) {
 	if (jumpTextFirst) {
 		context.demoTexts[0] = context.game.add.text(700, 85, 'Tip: long-press jump', { fontSize: '16px', fill: '#FFF' });
-//		context.demoTexts[1] = context.game.add.text(700, 140, 'and you will jump slightly longer', { fontSize: '16px', fill: '#FFF' });
 		jumpTextFirst = false;
 	}
 }
 
 function writeDeathHelpText(context) {
 	if (deathTextFirst) {
-//		context.demoTexts[2] = this.game.add.text(900, 400, 'and dont worry, dying isnt gonna kill you ;)', { fontSize: '16px', fill: '#FFF' });
+	//	context.demoTexts[2] = this.game.add.text(900, 400, '', { fontSize: '16px', fill: '#FFF' });
 		deathTextFirst = false;
 	}
 }
