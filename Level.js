@@ -9,16 +9,21 @@ Level = function(game, player) {
 	this.flipSwitch = false;
 	this.collectedCoins = 0;
 	this.coinsToCollect = 2;
-	this.currentLevel = 1;
+	this.currentLevel = 2;
 	this.changeOfLevel = false;
 	this.mapObjects = null;
 	this.demoTexts = [];
+	this.removeTileMode = false;
 };
 
 Level.prototype = {
 
 	preload: function() {
+		// this map is the original map and is not to be changed
+		game.load.tilemap('Original_map', 'levels2.json', null, Phaser.Tilemap.TILED_JSON);
+		// this is the working map which the player can modify.
 		game.load.tilemap('map', 'levels2.json', null, Phaser.Tilemap.TILED_JSON);
+
 		game.load.image('ground_1x1', 'assets/tiles/ground_1x1.png');
 		game.load.image('platformer_tiles_2x', 'assets/tiles/platformer_tiles_2x.png');
 		game.load.spritesheet('coin', 'assets/sprites/coin.png', 32, 32);
@@ -73,6 +78,11 @@ Level.prototype = {
 
 		this.playerGroup = game.add.group();
 		this.playerGroup.add(this.player.sprite);
+
+	// keyboard handling
+		this.removeTile = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
+		this.removeTile.onDown.add(function() {this.removeTileMode = true; console.log("remove tile mode ON"); }, this);
+		this.removeTile.onUp.add(function() {this.removeTileMode = false; console.log("remove tile mode OFF");}, this);
 	},
 
 	flipMap: function() {
@@ -105,10 +115,10 @@ Level.prototype = {
 	},
 
 	setUpMapSwitch: function() {
-
+	//HERE WE HAVE TO MAKE SURE THAT WE SAVE/LOAD RIGHT TILEMAP
+		derp <- start coding here again..
 		if (this.mapObjects !== null) {
 			this.mapObjects.forEach(function (body) {
-				body.remove;
 				body.removeFromWorld();
 			});
 		}
@@ -127,7 +137,7 @@ Level.prototype = {
 			this.layer[1].alpha = 1;
 			this.flipSwitch = true;
 		}
-
+		this.map.setLayer(this.currentLayer);
 		//  Set the tiles for collision.
 		//  Do this BEFORE generating the p2 bodies below.
 		this.map.setCollisionBetween(1, 144, true, this.currentLayer, true);
@@ -203,6 +213,7 @@ Level.prototype = {
 		this.layer[1].alpha = 0.3;
 		this.currentLayer = this.layer[0];
 
+		this.map.setLayer(this.currentLayer);
 		//  Set the tiles for collision.
 		//  Do this BEFORE generating the p2 bodies below.
 		this.map.setCollisionBetween(1, 144, true, this.currentLayer, true);
@@ -255,12 +266,18 @@ function digg(player, mapTile, playerShape, mapTileShape) {
 	console.log(mapTile);
 	console.log("------------")
 
-	var tile = this.map.getTile(x,y, this.currentLayer);
-	this.map.putTile(null, x,y, this.currentLayer);
+	if (this.removeTileMode) {
+		var tile = this.map.getTile(x, y, this.currentLayer);
+		//this.map.putTile(null, x,y, this.currentLayer);
+		this.map.removeTile(x, y, this.currentLayer);
+		mapTile.removeFromWorld();
+	}
+
+
 	//mapTile.destory();
-//tile.alpha = 0;
-//	tile.collides = false;
-//	tile.destroy();
+	//tile.alpha = 0;
+//		tile.collides = false;
+	//	tile.destroy();
 
 	/*var player = null;
 	var object = null;
