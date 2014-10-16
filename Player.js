@@ -71,7 +71,6 @@ Player.prototype = {
 		this.deathCounter += 1;
 		console.log(this.deathCounter);
 		this.deathSound.play('',0,0.1);
-		//	hud.scoreText.text = 'Score: ' + hud.score;
 	}
 
 };

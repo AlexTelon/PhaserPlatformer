@@ -9,7 +9,7 @@ Level = function(game, player) {
 	this.flipSwitch = false;
 	this.collectedCoins = 0;
 	this.coinsToCollect = 2;
-	this.currentLevel = 1;
+	this.currentLevel = 6;
 	this.changeOfLevel = false;
 	this.mapObjects = null;
 	this.demoTexts = [];
@@ -18,7 +18,7 @@ Level = function(game, player) {
 Level.prototype = {
 
 	preload: function() {
-		game.load.tilemap('map', 'levels.json', null, Phaser.Tilemap.TILED_JSON);
+		game.load.tilemap('map', 'levels2.json', null, Phaser.Tilemap.TILED_JSON);
 		game.load.image('ground_1x1', 'assets/tiles/ground_1x1.png');
 		game.load.image('platformer_tiles_2x', 'assets/tiles/platformer_tiles_2x.png');
 		game.load.spritesheet('coin', 'assets/sprites/coin.png', 32, 32);

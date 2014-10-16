@@ -8,7 +8,7 @@ HUD = function(game) {
 HUD.prototype = {
 
 	create: function() {
-	//	this.scoreText = this.game.add.text(32, 32, 'score: 0', { fontSize: '32px', fill: '#FFF' });
+		//	this.scoreText = this.game.add.text(32, 32, 'Coins collected: 0 of ', { fontSize: '32px', fill: '#FFF' });
 	}
 
 };
