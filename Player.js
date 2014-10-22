@@ -23,7 +23,7 @@ Player.prototype = {
 		this.sprite = game.add.sprite(this.startXPos, this.startYPos, 'dude');
 		this.sprite.name = 'player';
 		// the second variable true/false indicates if we are to have debugging on/off
-		this.game.physics.p2.enable(this.sprite, true);
+		this.game.physics.p2.enable(this.sprite, false);
 		this.sprite.body.fixedRotation = true;
 		this.sprite.body.gravity.y = 500;
 		this.sprite.checkWorldBounds = true;
@@ -37,7 +37,7 @@ Player.prototype = {
 		this.sprite.animations.add('leftFly', [2], 10, true);
 		this.sprite.animations.add('rightFly', [7], 10, true);
 
-		this.cursors = this.game.input.keyboard.createCursorKeys();
+	//	this.cursors = this.game.input.keyboard.createCursorKeys();
 		this.game.camera.follow(this.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
 
 		this.deathSound = this.game.add.audio('death');
@@ -70,7 +70,7 @@ Player.prototype = {
 		this.sprite.reset(this.startXPos, this.startYPos);
 		this.deathCounter += 1;
 		console.log(this.deathCounter);
-		this.deathSound.play('',0,0.1);
+		this.deathSound.play('',0,0.3,true);
 	}
 
 };
