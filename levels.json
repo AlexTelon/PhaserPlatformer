@@ -115,7 +115,7 @@
              "collides":"true"
             },
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":50,
          "x":0,
          "y":0
@@ -145,7 +145,7 @@
              "collides":"true"
             },
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":50,
          "x":0,
          "y":0
@@ -190,7 +190,7 @@
              "collides":"true"
             },
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":50,
          "x":0,
          "y":0
@@ -870,6 +870,78 @@
                  "y":97
                 }],
          "opacity":1,
+         "type":"objectgroup",
+         "visible":false,
+         "width":50,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":18,
+         "name":"A10OBJ",
+         "objects":[
+                {
+                 "gid":145,
+                 "height":0,
+                 "name":"playerPos",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":83,
+                 "y":524
+                }, 
+                {
+                 "gid":26,
+                 "height":0,
+                 "name":"coin",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":-0.088371,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":216,
+                 "y":89
+                }, 
+                {
+                 "gid":26,
+                 "height":0,
+                 "name":"coin",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":-0.088371,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":479,
+                 "y":77
+                }, 
+                {
+                 "gid":26,
+                 "height":0,
+                 "name":"coin",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":-0.088371,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":864,
+                 "y":76
+                }],
+         "opacity":0.970000028610229,
          "type":"objectgroup",
          "visible":false,
          "width":50,
