@@ -39,6 +39,7 @@ Keys.prototype = {
 			jumping = true;
 		}
 
+
 		if(this.cursors.left.isDown)
 		{
 			this.player.body.moveLeft(300);
@@ -66,7 +67,6 @@ Keys.prototype = {
 		}
 
 		if (this.cursors.down.isDown) {
-
 		}
 		//  Allow the player to jump if they are touching the ground.
 		if (jumping && checkIfCanJump(this.player))

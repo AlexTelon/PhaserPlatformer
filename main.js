@@ -1,4 +1,4 @@
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, '', { preload: preload, create: create, update: update, render:render });
+var game = new Phaser.Game(1022, 575, Phaser.CANVAS, '', { preload: preload, create: create, update: update, render:render });
 
 var player = null;
 var level = null;
@@ -7,7 +7,7 @@ var keys = null;
 
 function preload()
 {
-	// destory any previous chache so we can load new maps for example
+	// destory any previous cache so we can load new maps for example
 	game.cache.destroy();
 
 	player = new Player(game);
